@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+/* import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
@@ -7,7 +7,7 @@ function App() {
 
   useEffect(() => {
     // Fazendo a requisição GET para a API do Django
-    axios.get('http://127.0.0.1:8000/api/example/')
+    axios.get('http://127.0.0.1:8000/example/')
       .then(response => {
         // Salvando a mensagem no estado
         setMessage(response.data.message);
@@ -25,4 +25,17 @@ function App() {
   );
 }
 
+export default App; */
+
+import Login from './pages/Login/Login';
+
+const App = () => {
+  return (
+    <div className="App">
+      <Login />
+    </div>
+  );
+};
+
 export default App;
+
