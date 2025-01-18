@@ -7,8 +7,20 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-
+from .serializers import UserSerializer
 from django.http import JsonResponse
+from rest_framework import viewsets
+
+
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+
+
 
 def cadastro(request):
     if request.method == "GET":

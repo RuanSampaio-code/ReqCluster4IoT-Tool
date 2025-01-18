@@ -1,15 +1,23 @@
 
+from django.contrib.auth.models import User
+from rest_framework import viewsets
 from rest_framework import serializers
-from usuario.models import CustomUser
 
 class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)  # Habilita o campo de senha somente para escrita
-
     class Meta:
-        model = CustomUser
-        fields = ['id', 'username', 'email', 'is_admin', 'password']  # Mantém o campo de senha para cadastro
-
+        model = User
+        fields = ['id', 'username', 'email', 'is_staff', 'password'] 
+        
+    def create(self, validated_data):
+            password = validated_data.pop('password', None)
+            user = User.objects.create(**validated_data)
+            if password:
+                user.set_password(password)
+                user.save()
+            return user
+        
     def to_representation(self, instance):
-        data = super().to_representation(instance)
-        data.pop('password', None)  # Remove o campo 'password' da resposta
-        return data
+            representation = super().to_representation(instance)
+            representation.pop('password', None)  # Remove o campo 'password'
+            return representation
+            
