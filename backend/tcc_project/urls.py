@@ -11,8 +11,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', include('usuario.urls')),
-    path('usuarios/', include('usuario.urls'))
+    path('usuario/', include('usuario.urls')),
     #path('', include(router.urls)),
     #path('usuarios/', UsuarioViewSet.as_view({'get': 'list'})),
    

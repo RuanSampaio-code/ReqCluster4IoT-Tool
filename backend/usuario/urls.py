@@ -7,7 +7,7 @@ from rest_framework.routers import DefaultRouter
 from .views import UserViewSet
 
 router = DefaultRouter()
-router.register(r'users', UserViewSet)
+router.register(r'allusers', UserViewSet)
 
 
 urlpatterns = [
@@ -15,5 +15,6 @@ urlpatterns = [
     path('cadastro/', views.cadastro, name= 'cadastro'),
     path('login/', views.login, name= 'login'),
     path('home', views.home, name='home'),
+    path('example/', views.example_view, name='example'),
    
 ]
