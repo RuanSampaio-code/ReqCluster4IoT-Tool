@@ -1,5 +1,10 @@
 import { useState } from 'react';
-import 'bulma/css/bulma.min.css'; // Importa o Bulma CSS
+/* import 'bulma/css/bulma.min.css'; // Importa o Bulma CSS */
+
+import InputField from '../../components/InputField/InputField';
+import Button from '../../components/Button/Button';
+/* import '../../pages/';  */// Importando o CSS
+
 
 function Register() {
   const [name, setName] = useState('');
@@ -28,13 +33,12 @@ function Register() {
           <div className="field">
             <label className="label">Nome</label>
             <div className="control">
-              <input
-                className="input"
-                type="text"
-                placeholder="Digite seu nome"
+              <InputField
+                type="Nome"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                required
+                placeholder="Nome"
+                
               />
             </div>
           </div>
@@ -42,13 +46,12 @@ function Register() {
           <div className="field">
             <label className="label">Email</label>
             <div className="control">
-              <input
-                className="input"
-                type="email"
-                placeholder="Digite seu email"
+            <InputField
+                type="Nome"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
+                placeholder="Email"
+                
               />
             </div>
           </div>
@@ -56,13 +59,12 @@ function Register() {
           <div className="field">
             <label className="label">Senha</label>
             <div className="control">
-              <input
-                className="input"
-                type="password"
-                placeholder="Digite sua senha"
+              <InputField
+                type=  'password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
+                placeholder="Senha"
+              
               />
             </div>
           </div>
@@ -70,7 +72,7 @@ function Register() {
           <div className="field">
             <label className="label">Confirmar Senha</label>
             <div className="control">
-              <input
+              <InputField
                 className="input"
                 type="password"
                 placeholder="Confirme sua senha"
@@ -83,9 +85,9 @@ function Register() {
 
           <div className="field">
             <div className="control">
-              <button type="submit" className="button is-primary is-fullwidth">
-                Confirmar
-              </button>
+              <Button type="submit" >
+              Entrar
+              </Button>
             </div>
           </div>
         </form>
@@ -95,3 +97,4 @@ function Register() {
 }
 
 export default Register;
+

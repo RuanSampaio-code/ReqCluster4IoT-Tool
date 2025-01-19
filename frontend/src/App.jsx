@@ -68,18 +68,10 @@ function App() {
     
     <div>
 
-      <nav style={{ backgroundColor: '#333', padding: '1rem', color: '#fff' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
-          <h1>React + Django</h1>
-          <div>
-            <a href="#login" style={{ color: '#fff', margin: '0 1rem', textDecoration: 'none' }}>Login</a>
-            <a href="#register" style={{ color: '#fff', margin: '0 1rem', textDecoration: 'none' }}>Registrar</a>
-          </div>
-        </div>
-      </nav>
-      <h1>React + Django</h1>
+      
+     {/*  <h1>React + Django</h1>
       <p>Mensagem do Django: {message}</p>
-
+ */}
       <div className="App">
       <Login />
     </div>
