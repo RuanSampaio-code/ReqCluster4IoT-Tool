@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import InputField from '../../components/InputField/InputField';
 import Button from '../../components/Button/Button';
-/* import '../../pages/';  */// Importando o CSS
+import '../Register/RegisterStyles.css';  /// Importando o CSS
 
 
 function Register() {
@@ -26,8 +26,8 @@ function Register() {
   };
 
   return (
-    <div className="container is-fluid">
-      <div className="section">
+    <div className="container">
+      
         <h1 className="title has-text-centered">Cadastro de Usuário</h1>
         <form onSubmit={handleSubmit} className="box">
           <div className="field">
@@ -92,7 +92,7 @@ function Register() {
           </div>
         </form>
       </div>
-    </div>
+   
   );
 }
 

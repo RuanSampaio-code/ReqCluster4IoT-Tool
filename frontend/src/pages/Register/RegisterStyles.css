@@ -1,19 +1,14 @@
 /* Estilos gerais */
-body {
-  font-family: 'Roboto', sans-serif;
-  background-color: #f8f9fa;
-  margin: 0;
-  padding: 0;
-  color: #333;
-}
+
 
 /* Container principal */
 .container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  padding: 1rem;
+
 }
 
 /* Box do formulário */
@@ -46,40 +41,6 @@ body {
   display: block;
 }
 
-.input {
-  width: 100%;
-  padding: 0.8rem;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
-  font-size: 1rem;
-  outline: none;
-  transition: border-color 0.3s ease;
-}
 
-.input:focus {
-  border-color: #6c63ff;
-  box-shadow: 0 0 5px rgba(108, 99, 255, 0.3);
-}
 
 /* Botão */
-button {
-  width: 100%;
-  padding: 0.8rem;
-  background-color: #6c63ff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #574bdb;
-}
-
-/* Alinhamento centralizado */
-.has-text-centered {
-  text-align: center;
-}

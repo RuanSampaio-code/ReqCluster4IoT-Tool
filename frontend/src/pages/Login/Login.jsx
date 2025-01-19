@@ -9,13 +9,11 @@ import Navbar from '../../components/Navbar/NavBar';
 const LoginForm = () => {
 
   
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-
 
 
   useEffect(() => {
