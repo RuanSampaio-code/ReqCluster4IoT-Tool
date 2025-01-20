@@ -32,25 +32,6 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 
 
-/* const App = () => {
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get('http://127.0.0.1:8000/auth/');
-      setData(response.data);
-    } catch (error) {
-      console.error('Erro ao obter os dados:', error);
-    }
-  };
-
-  return (
-    <div className="App">
-      <Login />
-    </div>
-  );
-};
- */
-
 function App() {
   const [message, setMessage] = useState('');
 

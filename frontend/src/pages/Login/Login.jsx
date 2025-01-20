@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
+import { useNavigate } from 'react-router-dom'; // Para navegação
 import 'react-toastify/dist/ReactToastify.css';
 import InputField from '../../components/InputField/InputField';
 import Button from '../../components/Button/Button';
@@ -8,12 +9,13 @@ import Navbar from '../../components/Navbar/NavBar';
 
 const LoginForm = () => {
 
-  
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const navigate = useNavigate(); // Hook para navegação
 
 
   useEffect(() => {
@@ -34,6 +36,7 @@ const LoginForm = () => {
     e.preventDefault();
     if (!emailError && !passwordError && email && password) {
       toast.success('Login realizado com sucesso!');
+      navigate('/');
     } else {
       toast.error('Por favor, corrija os erros no formulário.');
     }
@@ -78,7 +81,5 @@ const LoginForm = () => {
     </div>
   );
 };
-
-// Estilos para a Navbar
 
 export default LoginForm;

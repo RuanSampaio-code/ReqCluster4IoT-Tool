@@ -9,7 +9,7 @@ function Navbar(){
                 <h1 style={navbarStyles.title}>Minha Aplicação</h1>
                 
                 <div>
-                    <Link to="" style={navbarStyles.link}>
+                    <Link to="/" style={navbarStyles.link}>
                         Login
                     </Link>
                     <Link to="/register" style={navbarStyles.link}>
