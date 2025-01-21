@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,17 +38,35 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # AUTENTICAÇÃO
+    #'rest_framework.authtoken',
+
+
     'usuario',
     'rest_framework',
     'corsheaders',
-   
     
 ]
 
 
+""" 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+} """
+
+
+
+
 
 MIDDLEWARE = [
+    #importante para api
     'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -62,13 +81,20 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # URL do frontend React
 ]
 
+#AUTH_USER_MODEL = 'usuario.CustomUser'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # Backend padrão
+    'usuario.backends.EmailBackend',             # Backend personalizado
+]
+
 
 ROOT_URLCONF = 'tcc_project.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'static')],  # Adiciona o diretório central de templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

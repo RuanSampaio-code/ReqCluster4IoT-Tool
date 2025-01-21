@@ -16,7 +16,7 @@ from django.db import models
 
 class CustomUser(AbstractUser):
 
-
+    email = models.EmailField(unique=True)  # E-mail único
     is_admin = models.BooleanField(default=False)
 
     # Adicione related_name para os campos de relacionamento

@@ -30,9 +30,14 @@ import App from './App.jsx';
 import Register from './pages/Register/Register.jsx';
 import Login from './pages/Login/Login.jsx'; // Importa a página de login
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Home from './pages/Home/Home.jsx';
 
 // Configuração das rotas
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App /> // Define App como rota principal
+  },
   {
     path: "/login",
     element: <Login /> // Define Login na rota /login
@@ -41,10 +46,12 @@ const router = createBrowserRouter([
     path: "/register",
     element: <Register /> // Define Register na rota /register
   },
+
   {
-    path: "/",
-    element: <App /> // Define App como rota principal
+    path: "/home",
+    element: <Home /> // Define Register na rota /register
   },
+  
 ]);
 
 createRoot(document.getElementById('root')).render(

@@ -138,7 +138,7 @@ function Register() {
     };
 
     try {
-      await axios.post('http://127.0.0.1:8000/usuario/register/', userData);
+      await axios.post('http://127.0.0.1:8000/usuario/', userData);
       alert('Cadastro realizado com sucesso!');
       navigate('/login'); // Redireciona para a página de login
     } catch (error) {

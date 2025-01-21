@@ -1,15 +1,19 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Usuários</title>
+
+    <link rel="stylesheet" href="{% static 'usuario/css/navbar.css' %}">
+
+    <link rel="stylesheet" href="{% static 'usuario/css/global.css' %}">
+
     <style>
-        *{
-            box-sizing: border-box;
-        }
+        
         body {
-            
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
             display: flex;
@@ -18,7 +22,6 @@
             height: 100vh;
         }
         .container {
-            
             background-color: #ffffff;
             padding: 20px;
             border-radius: 8px;
@@ -56,13 +59,40 @@
         button:hover {
             background-color: #0056b3;
         }
+        .alert {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .alert-error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
     </style>
 </head>
 <body>
 
+    {% include "includes/navbar.html" %}
     <div class="container">
         <h1>Cadastro de Usuários</h1>
-        <form action="{% url 'cadastro' %}" method="POST"> {% csrf_token %}
+        <!-- Bloco de Mensagens -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'error' %}alert-error{% else %}alert-success{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form action="{% url 'cadastro' %}" method="POST">
+            {% csrf_token %}
             <label for="nome">Nome completo:</label>
             <input type="text" id="nome" name="username" required>
 
@@ -78,6 +108,5 @@
             <button type="submit">Cadastrar</button>
         </form>
     </div>
-
 </body>
 </html>

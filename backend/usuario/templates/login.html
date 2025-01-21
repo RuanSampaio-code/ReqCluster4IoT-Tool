@@ -1,21 +1,125 @@
+
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login de Usuários</title>
+
+        
+    <link rel="stylesheet" href="{% static 'usuario/css/navbar.css' %}">
+
+    <style>
+
+
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;   
+        }
+
+        .page-login{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+
+
+        /* Estilos para a Navbar */
+       
+
+        /* Estilos para o container de login */
+        .login-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Estilos para o título de login */
+        .login-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #050505;
+            
+        }
+
+        /* Estilos para o formulário */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Estilos para os rótulos do formulário */
+        .login-label {
+            margin-bottom: 0.5rem;
+            color: #606770;
+        }
+
+        /* Estilos para os campos de entrada */
+        .login-input {
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+        }
+
+                
+        .login-input:focus {
+            
+            border-color: #01060c;
+        }
+
+        /* Estilos para o botão */
+        .login-button {
+            background-color: #070707;
+            color: white;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-button:hover {
+            background-color: #166fe5;
+           
+        }
+
+        /* Responsividade */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Login de Usuários</h1>
-    <form action="{% url 'login' %}" method="POST">
-        {% csrf_token %}
-        <label for="email">Endereço de e-mail:</label>
-        <input type="email" id="email" name="email" required>
 
-        <label for="senha">Senha:</label>
-        <input type="password" id="senha" name="senha" required>
+    {% include "includes/navbar.html" %}
 
-        <button type="submit">Entrar</button>
-    </form>
+    <div class="page-login">
+
+
+        <div class="login-container">
+            <h1 class="login-title">Login</h1>
+            <form action="{% url 'login' %}" method="POST" class="login-form">
+                {% csrf_token %}
+                <input type="email" id="email" name="email" class="login-input" placeholder="E-mail:" required>
+                <input type="password" id="senha" name="senha" class="login-input" placeholder="Senha">
+                <button type="submit" class="login-button">Entrar</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
