@@ -9,19 +9,14 @@
 
         
     <link rel="stylesheet" href="{% static 'usuario/css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'usuario/css/global.css' %}">
 
     <style>
 
-
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 0;   
-        }
+    
 
         .page-login{
+            background-color: #f0f2f5;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -29,9 +24,6 @@
         }
 
 
-
-        /* Estilos para a Navbar */
-       
 
         /* Estilos para o container de login */
         .login-container {
@@ -109,7 +101,6 @@
     {% include "includes/navbar.html" %}
 
     <div class="page-login">
-
 
         <div class="login-container">
             <h1 class="login-title">Login</h1>

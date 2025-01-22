@@ -16,6 +16,7 @@ urlpatterns = [
     path('cadastro/', views.cadastro, name= 'cadastro'),
     path('login/', views.login, name= 'login'),
     path('home/', views.autenticando, name='autenticando'),
+    path('logout/', views.logout_view, name='logout'),
     path('example/', views.example_view, name='example'),
    
 ]

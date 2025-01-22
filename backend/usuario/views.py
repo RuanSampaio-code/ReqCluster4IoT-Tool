@@ -4,7 +4,7 @@ from rest_framework import viewsets """
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from django.contrib.auth import login as auth_login
+from django.contrib.auth import login as auth_login, logout
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .serializers import UserSerializer
@@ -22,23 +22,6 @@ from django.shortcuts import render, redirect
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
-
-def user_login(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-
-        # Tentando autenticar o usuário com base no e-mail e senha
-        user = authenticate(request, username=email, password=password)
-        
-        if user is not None:
-            # Sucesso no login
-            return JsonResponse({'message': 'Login successful', 'user': user.username})
-        else:
-            # Falha no login
-            return JsonResponse({'error': 'Invalid username or password'}, status=400)
-        
 
 
 def cadastro(request):
@@ -73,7 +56,6 @@ def cadastro(request):
 
 #Login
 
-
 def login(request):
     if request.method == "GET":
         return render(request, 'login.html')
@@ -85,11 +67,11 @@ def login(request):
 
         if user:
             auth_login(request, user)  # Faz login do usuário
-            messages.success(request, 'Login realizado com sucesso!')
+            #messages.success(request, 'Login realizado com sucesso!')
             #return HttpResponse('Autheticado')
             return redirect('autenticando')  # Redirecione para a página inicial
         else:
-            messages.error(request, 'E-mail ou senha inválidos.')
+            #messages.error(request, 'E-mail ou senha inválidos.')
             return HttpResponse('email ou senha invalidos')
             #return redirect('login')
 
@@ -99,12 +81,17 @@ def autenticando(request):
 
         return render(request, 'home.html')
     return HttpResponse('voce precisa estar logado')
+   
 
-""" class UsuarioViewSet(viewsets.ModelViewSet):
-    queryset = CustomUser.objects.all()
-    serializer_class = UserSerializer
- """
-    
+
+def logout_view(request):
+    """Faz logout do usuário e redireciona para a página de login."""
+    logout(request)  # Faz o logout do usuário
+    messages.success(request, 'Você saiu com sucesso.')
+    return redirect('login')  # Redireciona para a página de login
+
+
+ 
 """ nova função de view apenas para teste """
 def example_view(request):
     return JsonResponse({'message': 'Hello from Django!'})
