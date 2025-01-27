@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set "VIRTUAL_ENV=C:\Users\ruans\Documents\GitHub\tcc\venv"
+set "VIRTUAL_ENV=C:\Users\ruans\Documents\GitHub\tcc\tcc-bict-jose-ruan\venv"
 
 if not defined PROMPT set PROMPT=$P$G
 
