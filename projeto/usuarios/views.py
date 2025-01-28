@@ -16,7 +16,7 @@ def login_view(request):
         user = authenticate(request, email=email, password=password)  # Agora usa o backend customizado
         if user is not None:
             login(request, user)  # Autentica o usuário
-            return redirect('protegida') # Redireciona para a página protegida
+            return redirect('home') # Redireciona para a página protegida
         else:
             return render(request, 'usuarios/login.html', {'error': 'Usuário ou senha inválidos'})
 
@@ -37,11 +37,50 @@ def registrar_usuario(request):
                 tipo_usuario=form.cleaned_data['tipo_usuario'],
             )
             usuario.save()
+        
             return redirect('login')  # Redirecionar para a página de login
     else:
         form = RegistroUsuarioForm()
 
     return render(request, 'usuarios/registrar.html', {'form': form})
+
+
+
+#Registrar Usuário na home
+@login_required
+def registrar_usuario_home(request):
+    if request.method == 'POST':
+        form = RegistroUsuarioForm(request.POST)
+        if form.is_valid():
+            # Criação do usuário
+            usuario = CustomUser(
+                username=form.cleaned_data['username'],
+                email=form.cleaned_data['email'],
+                password=make_password(form.cleaned_data['senha']),
+                tipo_usuario=form.cleaned_data['tipo_usuario'],
+            )
+            usuario.save()
+        
+            return redirect('home')  # Redirecionar para a página de login
+    else:
+        form = RegistroUsuarioForm()
+
+    return render(request, 'usuarios/registrar_usuario__home.html', {'form': form})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # View para logout
