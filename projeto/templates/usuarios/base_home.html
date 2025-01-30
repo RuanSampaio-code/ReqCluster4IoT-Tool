@@ -128,22 +128,17 @@
                         </a>
                     </li>
                     
+                    {% if request.user.tipo_usuario == 'admin' %}
                     <li class="nav-item mb-3">
-                        <a href="{% url 'registrar_usuario_home' %}" class="nav-link d-flex align-items-center text-dark rounded py-2 px-3 btn btn-light hover-bg-primary">
+                        <a href="{% url 'gerencia_usuarios' %}" class="nav-link d-flex align-items-center text-dark rounded py-2 px-3 btn btn-light hover-bg-primary">
                             <svg class="me-2" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
                             </svg>
                             <span>Cadastro de Usuário</span>
                         </a>
                     </li>
-                    <li class="nav-item mb-3">
-                        <a href="{% url 'listar_usuarios' %}" class="nav-link d-flex align-items-center text-dark rounded py-2 px-3 btn btn-light hover-bg-primary">
-                            <svg class="me-2" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                            </svg>
-                            <span>Listar Usuários</span>
-                        </a>
-                    </li>
+                    {% endif %}
+
 
                     <li class="nav-item mb-3">
                         <a href="#" class="nav-link d-flex align-items-center text-dark rounded py-2 px-3 btn btn-light hover-bg-primary">

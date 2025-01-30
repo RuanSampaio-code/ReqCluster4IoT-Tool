@@ -10,7 +10,7 @@
     <div class="card shadow p-4" style="width: 100%; max-width: 500px;">
         <h1 class="text-center mb-4">Cadastro de Usuário</h1>
        
-        <form method="post" action="{% url 'registrar' %}" class="needs-validation" novalidate>
+        <form method="post" action="{% url 'novo_usuario' %}" class="needs-validation" novalidate>
             {% csrf_token %}
             <div class="mb-3">
                 <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>

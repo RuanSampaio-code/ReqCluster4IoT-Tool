@@ -48,8 +48,8 @@ def registrar_usuario(request):
 
 #Registrar Usuário na home
 @login_required
-def registrar_usuario_home(request):
-    if request.method == 'POST':
+def gerencia_usuarios(request):
+    """ if request.method == 'GET':
         form = RegistroUsuarioForm(request.POST)
         if form.is_valid():
             # Criação do usuário
@@ -63,16 +63,33 @@ def registrar_usuario_home(request):
         
             return redirect('home')  # Redirecionar para a página de login
     else:
+        form = RegistroUsuarioForm() """
+
+    return render(request, 'usuarios/gerencia_usuarios.html')
+
+
+
+
+
+@login_required
+def novo_usuario(request):
+    if request.method == 'POST':
+        form = RegistroUsuarioForm(request.POST)
+        if form.is_valid():
+            # Criação do usuário
+            usuario = CustomUser(
+                username=form.cleaned_data['username'],
+                email=form.cleaned_data['email'],
+                password=make_password(form.cleaned_data['senha']),
+                tipo_usuario=form.cleaned_data['tipo_usuario'],
+            )
+            usuario.save()
+        
+            return redirect('gerencia_usuarios')  # Redirecionar para a página de login
+    else:
         form = RegistroUsuarioForm()
 
-    return render(request, 'usuarios/registrar_usuario__home.html', {'form': form})
-
-
-
-
-
-
-
+    return render(request, 'usuarios/novo_usuario.html', {'form': form})
 
 
 
