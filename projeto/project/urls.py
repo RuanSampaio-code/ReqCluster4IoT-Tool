@@ -20,4 +20,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),  # Rota do Django Admin
     path('', include('usuarios.urls')),  # Inclui as URLs do app 'usuarios'
+    path('', include('projetos.urls')),  # Inclui as URLs do app 'projetos'
 ]

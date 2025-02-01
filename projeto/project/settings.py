@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 from django.contrib.messages import constants as messages
 
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'usuarios',
+    'projetos',
     'widget_tweaks',
 ]
 
@@ -60,6 +61,10 @@ AUTHENTICATION_BACKENDS = [
     'usuarios.backends.EmailBackend',  # Caminho completo para a classe
     'django.contrib.auth.backends.ModelBackend',  # Backend padrão do Django (opcional)         
 ]
+
+
+MEDIA_URL = '/media/'  # URL para acessar os arquivos de mídia
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Pasta onde os arquivos serão armazenados
 
 
 MESSAGE_TAGS = {
