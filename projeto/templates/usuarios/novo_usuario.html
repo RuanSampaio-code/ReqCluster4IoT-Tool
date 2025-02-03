@@ -9,6 +9,7 @@
 <div class="vh-100 d-flex justify-content-center align-items-center">
     <div class="card shadow p-4" style="width: 100%; max-width: 500px;">
         <h1 class="text-center mb-4">Cadastro de Usuário</h1>
+        
        
         <form method="post" action="{% url 'novo_usuario' %}" class="needs-validation" novalidate>
             {% csrf_token %}
