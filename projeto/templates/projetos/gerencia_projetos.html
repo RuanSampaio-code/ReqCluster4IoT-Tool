@@ -1,31 +1,111 @@
-{% extends 'usuarios/home.html' %}
+{% extends 'usuarios/base_home.html' %}
+
 {% load widget_tweaks %}
 {% load static %}
 
-{% block title %}Projetos{% endblock %}
+{% block title %}Gerenciamento de Projetos{% endblock %}
 
 {% block content %}
-<div class="vh-100 d-flex justify-content-center align-items-center">
-    <div class="card shadow p-4" style="width: 100%; max-width: 500px;">
-        <h1 class="text-center mb-4">Gerenciar Projetos</h1>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="text-center mb-0"><i class="fas fa-tasks me-2"></i>Controle de Projetos</h2>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        <!-- Novo Projeto -->
+                        <div class="col-12 col-sm-6">
+                            <button type="button" class="btn btn-primary h-100 w-100 d-flex flex-column py-3" data-bs-toggle="modal" data-bs-target="#novoProjetoModal">
+                                <i class="fas fa-plus-circle fa-2x mb-2"></i>
+                                <span class="fw-bold">Novo Projeto</span>
+                                <small class="text-white-50">Criar novo projeto do zero</small>
+                            </button>
+                        </div>
 
-        <div class="d-grid gap-2">
-            <!-- Card para Novo Usuário -->
-            <a href="#" class="btn btn-primary btn-lg">
-                <svg class="me-2" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-                </svg>
-                Novo Projeto
-            </a>
+                        <!-- Listar Projetos -->
+                        <div class="col-12 col-sm-6">
+                            <a href="#" class="btn btn-success h-100 w-100 d-flex flex-column py-3">
+                                <i class="fas fa-list-ol fa-2x mb-2"></i>
+                                <span class="fw-bold">Listar Projetos</span>
+                                <small class="text-white-50">Visualizar todos os projetos</small>
+                            </a>
+                        </div>
 
-            <!-- Card para Listar Usuários -->
-            <a href="#" class="btn btn-secondary btn-lg">
-                <svg class="me-2" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                </svg>
-                Listar projetos
-            </a>
+                        <!-- Alterar Projeto -->
+                        <div class="col-12 col-sm-6">
+                            <a href="#" class="btn btn-info h-100 w-100 d-flex flex-column py-3">
+                                <i class="fas fa-edit fa-2x mb-2"></i>
+                                <span class="fw-bold">Alterar Projeto</span>
+                                <small class="text-white-50">Editar informações básicas</small>
+                            </a>
+                        </div>
+
+                        <!-- Ajustar Projeto -->
+                        <div class="col-12 col-sm-6">
+                            <a href="#" class="btn btn-warning h-100 w-100 d-flex flex-column py-3">
+                                <i class="fas fa-cogs fa-2x mb-2"></i>
+                                <span class="fw-bold">Ajustar Projeto</span>
+                                <small class="text-white-50">Configurações avançadas</small>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<!-- Modal Novo Projeto -->
+<div class="modal fade" id="novoProjetoModal" tabindex="-1" aria-labelledby="novoProjetoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="novoProjetoModalLabel">Novo Projeto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>Erros:</strong>
+                    <ul>
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            <div class="modal-body">
+
+                <form method="POST" enctype="multipart/form-data"  action="{% url 'criar_projeto' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome do Projeto</label>
+                        <input type="text" class="form-control" id="nome" name="nome" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="arquivo_requisitos" class="form-label">Arquivo de Requisitos (opcional)</label>
+                        <input type="file" class="form-control" id="arquivo_requisitos" name="arquivo_requisitos" accept=".txt">
+                    </div>
+                    <div class="mb-3">
+                        <label for="requisitos_digitados" class="form-label">Requisitos Digitados (opcional)</label>
+                        <textarea class="form-control" id="requisitos_digitados" name="requisitos_digitados" rows="3"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Salvar Projeto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
