@@ -12,6 +12,11 @@
         body {
             font-family: 'Poppins', sans-serif;
         }
+        .main-content {
+             /* Igual à largura da sidebar */
+            min-height: 100vh;
+            transition: margin-left 0.3s;
+        }
         .sidebar-custom h3, 
         .navbar-custom .nav-link, 
         .nav-link span {
@@ -38,6 +43,9 @@
     </style>
 </head>
 <body class="bg-light">
+
+    
+
     <div class="d-flex flex-column flex-lg-row vh-100">
 
         
@@ -79,9 +87,9 @@
 
 
                     <li class="nav-item mb-3">
-                        <a href="{% url 'editar_perfil' %}"  class="nav-link d-flex align-items-center text-dark rounded py-2 px-3 btn btn-light hover-bg-primary">
-                            <svg class="me-2" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a4 4 0 014 4v1a4 4 0 01-1 2.73V12a4 4 0 01-4 4v1a4 4 0 01-4-4v-2.27A4 4 0 017 7V6a4 4 0 014-4zm0 12v6m-3-6h6"></path>
+                        <a href="{% url 'editar_perfil' %}" class="nav-link d-flex align-items-center text-dark rounded py-2 px-3 btn btn-light hover-bg-primary">
+                            <svg class="me-2" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                             <span>Perfil</span>
                         </a>

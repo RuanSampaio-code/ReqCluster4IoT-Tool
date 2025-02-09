@@ -8,6 +8,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import RegistroUsuarioForm, EditarPerfilForm
 from django.contrib.auth import update_session_auth_hash
+from django.shortcuts import get_object_or_404
+from django.core.exceptions import PermissionDenied
+from django.views.decorators.http import require_POST
 
 
 #Tela de login
@@ -25,32 +28,9 @@ def login_view(request):
 
     return render(request, 'usuarios/login.html')
 
-#pagina de novo usuario
-@login_required
-def novo_usuario(request):
-    if request.method == 'POST':
-        form = RegistroUsuarioForm(request.POST)
-        if form.is_valid():
-            # Criação do usuário
-            usuario = CustomUser(
-                username=form.cleaned_data['username'],
-                email=form.cleaned_data['email'],
-                password=make_password(form.cleaned_data['senha']),
-                tipo_usuario=form.cleaned_data['tipo_usuario'],
-            )
-            usuario.save()
-        
-            return redirect('gerencia_usuarios')  # Redirecionar para a página de login
-    else:
-        form = RegistroUsuarioForm()
-
-    return render(request, 'usuarios/novo_usuario.html', {'form': form})
 
 
-
-
-
-# Registrar Usuário dentro da apaplicação
+# Registrar novo Usuário 
 def registrar_usuario(request):
     if request.method == 'POST':
         form = RegistroUsuarioForm(request.POST)
@@ -76,7 +56,37 @@ def registrar_usuario(request):
     return render(request, 'usuarios/registrar.html', {'form': form})
 
 
-# Na view de edição de perfil
+
+
+#pagina de novo usuario na dentro da home
+@login_required
+def novo_usuario(request):
+    if request.method == 'POST':
+        form = RegistroUsuarioForm(request.POST)
+        if form.is_valid():
+            # Criação do usuário
+            usuario = CustomUser(
+                username=form.cleaned_data['username'],
+                email=form.cleaned_data['email'],
+                password=make_password(form.cleaned_data['senha']),
+                tipo_usuario=form.cleaned_data['tipo_usuario'],
+            )
+            usuario.save()
+            messages.success(request, 'Usuário cadastrado com sucesso!')
+            return redirect('gerencia_usuarios')  # Redirecionar para a página de login
+        else:
+            messages.error(request, 'Formulário inválido. Por favor, corrija os erros e tente novamente.')
+           
+    else:
+        form = RegistroUsuarioForm()
+
+    return render(request, 'usuarios/novo_usuario.html', {'form': form})
+
+
+
+
+
+#edição de perfil
 @login_required
 def editar_perfil(request):
     usuario = request.user
@@ -103,34 +113,98 @@ def editar_perfil(request):
 
 
 
-
-
-#Registrar Usuário na home
+#Lista usuarios na pagina de gerneciasr usuarios
 @login_required
 def gerencia_usuarios(request):
-    return render(request, 'usuarios/gerencia_usuarios.html')
+    usuarios = CustomUser.objects.all()
+    return render(request, 'usuarios/gerencia_usuarios.html',{'usuarios':usuarios} )
 
 
+#Editar usuario
+@login_required
+def editar_usuario(request, user_id):
+
+    
+    # Obtém o usuário a ser editado
+    usuario = get_object_or_404(CustomUser, pk=user_id)
+    
+    # Verifica se o usuário atual é admin
+    is_admin = request.user.tipo_usuario == 'admin'
+    
+    # --- Controle de Permissões ---
+    # 1. Apenas admin pode editar outros usuários
+    if not is_admin and usuario != request.user:
+        raise PermissionDenied("Você não tem permissão para editar outros usuários")
+    
+    # 2. Impedir que não-admins editem admins
+    if usuario.tipo_usuario == 'admin' and not is_admin:
+        raise PermissionDenied("Apenas administradores podem editar outros administradores")
+    
+    # 3. Se for auto-edicao, permitir apenas campos específicos
+    if usuario == request.user and not is_admin:
+        form = EditarPerfilForm(instance=usuario, is_self_edit=True)
+    else:
+        form = EditarPerfilForm(request.POST or None, instance=usuario)
+    
+    # --- Lógica do Formulário ---
+    if request.method == 'POST' and form.is_valid():
+        # Validação extra para tipo de usuário
+        if form.cleaned_data['tipo_usuario'] == 'admin' and not is_admin:
+            raise PermissionDenied("Apenas administradores podem definir este perfil")
+        
+        form.save()
+        messages.success(request, 'Alterações salvas com sucesso!')
+        return redirect('gerencia_usuarios')
+    
+    # --- Ajuste de Campos ---
+    if not is_admin:
+        # Remove o campo tipo_usuario para não-admins
+        form.fields.pop('tipo_usuario', None)
+        
+        # Se for auto-edicao, remove campos sensíveis
+        if usuario == request.user:
+            form.fields.pop('nova_senha', None)
+            form.fields.pop('confirmar_senha', None)
+    
+    return render(request, 'usuarios/editar_usuario.html', {
+        'form': form,
+        'usuario': usuario,
+        'is_admin': is_admin
+    })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@require_POST
+@login_required
+def deletar_usuario(request, user_id):
+    usuario = get_object_or_404(CustomUser, pk=user_id)
+    
+    # Verifica se o usuário atual é admin
+    is_admin = request.user.tipo_usuario == 'admin'
+    
+    # --- Controle de Permissões ---
+    # 1. Apenas admin pode deletar outros usuários
+    if not is_admin and usuario != request.user:
+        raise PermissionDenied("Você não tem permissão para deletar outros usuários")
+    
+    # 2. Impedir que não-admins deletem admins
+    if usuario.tipo_usuario == 'admin' and not is_admin:
+        raise PermissionDenied("Apenas administradores podem deletar outros administradores")
+    
+    # 3. Se for auto-deleção, permitir apenas para não-admins
+    if usuario == request.user and not is_admin:
+        raise PermissionDenied("Você não pode deletar sua própria conta")
+    
+    # --- Lógica da Deleção ---
+    try:
+        usuario.delete()
+        messages.success(request, "Usuário excluído com sucesso!")
+        if usuario == request.user:
+            logout(request)
+            return redirect('login')
+    except Exception as e:
+        messages.error(request, f"Erro ao excluir usuário: {str(e)}")
+    
+    return redirect('gerencia_usuarios')
 
 
 # View para logout
@@ -144,13 +218,3 @@ def logout_view(request):
 def pagina_protegida(request):
     return render(request, 'usuarios/home.html')
 
-
-
-
-@login_required
-def listar_usuarios(request):
-    """
-    Lista todos os usuários cadastrados no sistema.
-    """
-    usuarios = CustomUser.objects.all()  # Busca todos os usuários do banco de dados
-    return render(request, 'usuarios/listar_usuarios.html', {'usuarios': usuarios})

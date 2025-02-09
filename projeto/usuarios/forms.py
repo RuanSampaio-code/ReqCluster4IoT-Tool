@@ -43,7 +43,7 @@ class EditarPerfilForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'email']
+        fields = ['username', 'email', 'tipo_usuario']  # ADICIONE O CAMPO AQUI]
 
     def clean(self):
         cleaned_data = super().clean()

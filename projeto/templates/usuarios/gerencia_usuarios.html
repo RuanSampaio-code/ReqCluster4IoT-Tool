@@ -2,30 +2,131 @@
 {% load widget_tweaks %}
 {% load static %}
 
-{% block title %}Cadastro de Usuário{% endblock %}
+{% block title %}Gerenciar Usuários{% endblock %}
 
 {% block content %}
-<div class="vh-100 d-flex justify-content-center align-items-center">
-    <div class="card shadow p-4" style="width: 100%; max-width: 500px;">
-        <h1 class="text-center mb-4">Gerenciar Usuários</h1>
+<div class="d-flex flex-column align-items-center p-4">
+    <div class="card shadow p-4 mb-4" style="width: 100%; max-width: 500px;">
+        <h1 class="text-center mb-3">Gerenciar Usuários</h1>
 
-        <div class="d-grid gap-2">
-            <!-- Card para Novo Usuário -->
-            <a href="{% url 'novo_usuario' %}" class="btn btn-primary btn-lg">
-                <svg class="me-2" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-                </svg>
-                Novo Usuário
-            </a>
+        <!-- Exibir mensagens de sucesso ou erro -->
+        {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% endif %}
 
-            <!-- Card para Listar Usuários -->
-            <a href="{% url 'listar_usuarios' %}" class="btn btn-secondary btn-lg">
-                <svg class="me-2" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                </svg>
-                Listar Usuários
-            </a>
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endif %}
+        
+        <!-- Botão discreto para Novo Usuário -->
+        <div class="text-end">
+            <a href="{% url 'novo_usuario' %}" class="btn btn-outline-primary btn-sm">+ Novo Usuário</a>
+        </div>
+    </div>
+    
+    <!-- Lista de Usuários -->
+    <div class="card shadow p-4" style="width: 100%; max-width: 800px;">
+        <h2 class="text-center mb-3">Usuários Cadastrados</h2>
+        <!-- Tabela Responsiva com Scroll Vertical -->
+        <div class="table-responsive" style="max-height: 60vh; overflow-y: auto;">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Tipo de usuário</th>
+                        <th scope="col">opções</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if usuarios %}
+                        {% for usuario in usuarios %}
+                        <tr>
+                            <td>{{ usuario.id }}</td>
+                            <td>{{ usuario.username }}</td>
+                            <td>{{ usuario.email }}</td>
+                            <td>{{ usuario.tipo_usuario }}</td>
+                            <td>
+                                <a href="{% url 'editar_usuario' usuario.id %}" class="btn btn-sm btn-outline-secondary me-1">✏️</a>
+                                <button 
+                                class="btn btn-sm btn-outline-danger btn-excluir"
+                                data-user-id="{{ usuario.id }}"
+                                data-user-name="{{ usuario.username }}"
+                                data-user-email="{{ usuario.email }}"
+                            >
+                                🗑️
+                            </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center">Nenhum usuário cadastrado.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
+
+
+<!-- Modal de Confirmação -->
+<div class="modal fade" id="confirmarExclusaoModal" tabindex="-1" aria-labelledby="confirmarExclusaoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="confirmarExclusaoModalLabel">⚠️ Confirmar Exclusão</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja excluir o usuário <strong id="nomeUsuario"></strong>?</p>
+                <p class="text-muted small">ID: <span id="idUsuario"></span><br>Email: <span id="emailUsuario"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form id="formExclusao" method="POST"  action="{% url 'deletar_usuario' 0 %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script para o Modal -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = new bootstrap.Modal(document.getElementById('confirmarExclusaoModal'));
+    
+    // Atualiza os dados do modal ao clicar em um botão de exclusão
+    document.querySelectorAll('.btn-excluir').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Captura os dados do usuário
+            const userId = this.dataset.userId;
+            const userName = this.dataset.userName;
+            const userEmail = this.dataset.userEmail;
+            
+            // Atualiza o formulário
+            document.getElementById('formExclusao').action = `{% url 'deletar_usuario' 0 %}`.replace('0', userId);
+            document.getElementById('nomeUsuario').textContent = userName;
+            document.getElementById('idUsuario').textContent = userId;
+            document.getElementById('emailUsuario').textContent = userEmail;
+            
+            // Exibe o modal
+            modal.show();
+        });
+    });
+});
+</script>
+
 {% endblock %}
