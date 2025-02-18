@@ -1,0 +1,124 @@
+{% extends 'usuarios/base_home.html' %}
+
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Detalhes do Projeto - {{ projeto.nome }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <!-- Cabeçalho com botão de voltar -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <a href="{% url 'gerencia_projetos' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Voltar
+                </a>
+                <div class="btn-group">
+                    <a href="{% url 'editar_projeto' projeto.id %}" class="btn btn-outline-primary">
+                        <i class="fas fa-edit me-2"></i>Editar
+                    </a>
+                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmarExclusao">
+                        <i class="fas fa-trash-alt me-2"></i>Excluir
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card de detalhes -->
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-project-diagram me-2"></i>{{ projeto.nome }}
+                    </h3>
+                </div>
+
+                <div class="card-body">
+                    <!-- Seção de Descrição -->
+                    <div class="mb-4">
+                        <h5 class="text-primary mb-3">
+                            <i class="fas fa-file-alt me-2"></i>Descrição do Projeto
+                        </h5>
+                        <div class="bg-light p-3 rounded">
+                            {% if projeto.descricao %}
+                                {{ projeto.descricao|linebreaks }}
+                            {% else %}
+                                <p class="text-muted mb-0">Nenhuma descrição fornecida</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Seção de Requisitos -->
+                    <div class="mb-4">
+                        <h5 class="text-primary mb-3">
+                            <i class="fas fa-tasks me-2"></i>Requisitos
+                        </h5>
+                        
+                        <!-- Arquivo de Requisitos -->
+                        {% if projeto.arquivo_requisitos %}
+                        <div class="mb-3">
+                            <p class="fw-bold mb-2">Arquivo anexado:</p>
+                            <a href="{{ projeto.arquivo_requisitos.url }}" class="btn btn-outline-primary btn-sm" download>
+                                <i class="fas fa-download me-2"></i>Baixar Arquivo
+                            </a>
+                        </div>
+                        {% endif %}
+
+                        <!-- Requisitos Digitados -->
+                        <div class="mt-3">
+                            <p class="fw-bold mb-2">Requisitos digitados:</p>
+                            <div class="bg-light p-3 rounded">
+                                {% if projeto.requisitos_digitados %}
+                                    <pre class="mb-0">{{ projeto.requisitos_digitados }}</pre>
+                                {% else %}
+                                    <p class="text-muted mb-0">Nenhum requisito digitado</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Informações adicionais -->
+                    <div class="row text-muted small mt-4">
+                        <div class="col-md-6">
+                            <p class="mb-1">
+                                <i class="fas fa-user-circle me-2"></i>Criado por: {{ projeto.usuario.get_full_name }}
+                            </p>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <p class="mb-1">
+                                <i class="fas fa-calendar-alt me-2"></i>Criado em: {{ projeto.data_criacao|date:"d/m/Y H:i" }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmação de Exclusão -->
+<div class="modal fade" id="confirmarExclusao" tabindex="-1" aria-labelledby="confirmarExclusaoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="confirmarExclusaoLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Confirmar Exclusão
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja excluir permanentemente o projeto <strong>"{{ projeto.nome }}"</strong>?</p>
+                <p class="text-danger small mb-0">Esta ação não pode ser desfeita!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form method="POST" action="{% url 'deletar_projeto' projeto.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash-alt me-2"></i>Confirmar Exclusão
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Projeto</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Criar Novo Projeto</h2>
+        
+        {% if messages %}
+            <div class="alert alert-dismissible fade show">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                {{ form.nome.label_tag }}
+                {{ form.nome }}
+                {% if form.nome.errors %}
+                    <div class="text-danger">{{ form.nome.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Repita para outros campos do formulário -->
+            
+            <button type="submit" class="btn btn-primary">Salvar Projeto</button>
+            <a href="{% url 'gerencia_projetos' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

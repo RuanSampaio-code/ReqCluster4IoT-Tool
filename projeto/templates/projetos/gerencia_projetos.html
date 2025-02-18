@@ -11,49 +11,40 @@
         <div class="col-md-8 col-lg-6">
             <div class="card border-0 shadow-lg">
                 <div class="card-header bg-primary text-white">
-                    <h2 class="text-center mb-0"><i class="fas fa-tasks me-2"></i>Controle de Projetos</h2>
+                    <h2 class="text-center mb-0"><i class="fas fa-tasks me-2"></i> Controle de Projetos</h2>
                 </div>
-                <div class="card-body p-4">
-                    <div class="row g-3">
-                        <!-- Novo Projeto -->
-                        <div class="col-12 col-sm-6">
-                            <button type="button" class="btn btn-primary h-100 w-100 d-flex flex-column py-3" data-bs-toggle="modal" data-bs-target="#novoProjetoModal">
-                                <i class="fas fa-plus-circle fa-2x mb-2"></i>
-                                <span class="fw-bold">Novo Projeto</span>
-                                <small class="text-white-50">Criar novo projeto do zero</small>
-                            </button>
-                        </div>
+                <div class="card-body text-center">
+                    <!-- Botão de Novo Projeto -->
+                    <button type="button" class="btn btn-primary w-100 py-3" data-bs-toggle="modal" data-bs-target="#novoProjetoModal">
+                        <i class="fas fa-plus-circle me-2"></i> Novo Projeto
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                        <!-- Listar Projetos -->
-                        <div class="col-12 col-sm-6">
-                            <a href="#" class="btn btn-success h-100 w-100 d-flex flex-column py-3">
-                                <i class="fas fa-list-ol fa-2x mb-2"></i>
-                                <span class="fw-bold">Listar Projetos</span>
-                                <small class="text-white-50">Visualizar todos os projetos</small>
-                            </a>
-                        </div>
-
-                        <!-- Alterar Projeto -->
-                        <div class="col-12 col-sm-6">
-                            <a href="#" class="btn btn-info h-100 w-100 d-flex flex-column py-3">
-                                <i class="fas fa-edit fa-2x mb-2"></i>
-                                <span class="fw-bold">Alterar Projeto</span>
-                                <small class="text-white-50">Editar informações básicas</small>
-                            </a>
-                        </div>
-
-                        <!-- Ajustar Projeto -->
-                        <div class="col-12 col-sm-6">
-                            <a href="#" class="btn btn-warning h-100 w-100 d-flex flex-column py-3">
-                                <i class="fas fa-cogs fa-2x mb-2"></i>
-                                <span class="fw-bold">Ajustar Projeto</span>
-                                <small class="text-white-50">Configurações avançadas</small>
-                            </a>
-                        </div>
+    <!-- Listagem de Projetos -->
+    <div class="row mt-4">
+        {% for projeto in projetos %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">{{ projeto.nome }}</h5>
+                    <p class="card-text text-muted">{{ projeto.descricao|truncatechars:100 }}</p>
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'detalhes_projeto' projeto.id %}" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-eye"></i> Ver Detalhes
+                        </a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
+        {% empty %}
+        <p class="text-center text-muted">Nenhum projeto cadastrado ainda.</p>
+        {% endfor %}
     </div>
 </div>
 
@@ -66,21 +57,20 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            {% if form.errors %}
-                <div class="alert alert-danger">
-                    <strong>Erros:</strong>
-                    <ul>
-                    {% for field, errors in form.errors.items %}
-                        {% for error in errors %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                    {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
             <div class="modal-body">
-
-                <form method="POST" enctype="multipart/form-data"  action="{% url 'criar_projeto' %}">
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <strong>Erros:</strong>
+                        <ul>
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <form method="POST" enctype="multipart/form-data" action="{% url 'criar_projeto' %}">
                     {% csrf_token %}
                     <div class="mb-3">
                         <label for="nome" class="form-label">Nome do Projeto</label>
@@ -107,5 +97,4 @@
         </div>
     </div>
 </div>
-
 {% endblock %}

@@ -10,7 +10,8 @@ from django.contrib import messages
 
 @login_required
 def gerencia_projetos(request):
-    return render(request, 'projetos/gerencia_projetos.html')
+    projetos = Projeto.objects.filter(usuario=request.user)
+    return render(request, 'projetos/gerencia_projetos.html', {'projetos': projetos})
 
 
 
@@ -18,25 +19,32 @@ def gerencia_projetos(request):
 def listar_projetos(request):
     projetos = Projeto.objects.filter(usuario=request.user)
     return render(request, 'projetos/listar.html', {'projetos': projetos})
+
+@login_required
+def detalhes_projeto(request, id):
+    projeto = get_object_or_404(Projeto, id=id, usuario=request.user)
+    return render(request, 'projetos/detalhes_projeto.html', {'projeto': projeto})
+
+
+
 @login_required
 def criar_projeto(request):
     if request.method == 'POST':
-        # Adicionar request.FILES para processar arquivos
+        print(request.FILES)  # Verifica se o arquivo realmente está sendo enviado
+
         form = ProjetoForm(request.POST, request.FILES)
         if form.is_valid():
             projeto = form.save(commit=False)
             projeto.usuario = request.user
             projeto.save()
-            # Redirecionar para a página desejada após sucesso
-            return redirect('gerencia_projetos')  # Verifique o nome correto da sua URL
+            messages.success(request, 'Projeto criado com sucesso!')
+            return redirect('gerencia_projetos')
         else:
-            # Adicionar tratamento de erros
-            messages.error(request, 'Corrija os erros abaixo.')
+            messages.error(request, 'Erro no formulário!')
     else:
         form = ProjetoForm()
-    
-    # Se houver erros, reexibir o modal com os erros
-    return render(request, 'seu_template.html', {'form': form})
+
+    return render(request, 'projetos/seu_template.html', {'form': form})
 
 @login_required
 def editar_projeto(request, id):

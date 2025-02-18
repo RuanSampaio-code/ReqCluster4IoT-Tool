@@ -64,8 +64,11 @@ AUTHENTICATION_BACKENDS = [
 
 
 MEDIA_URL = '/media/'  # URL para acessar os arquivos de mídia
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Pasta onde os arquivos serão armazenados
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')  # Pasta onde os arquivos serão armazenados
 
+# Adicione estas configurações
+""" MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/') """
 
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',  # Mapeia o nível de erro para a classe CSS 'danger' do Bootstrap
