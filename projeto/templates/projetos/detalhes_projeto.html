@@ -53,27 +53,31 @@
                             <i class="fas fa-tasks me-2"></i>Requisitos
                         </h5>
                         
+                        <!-- Lista de Requisitos Digitados -->
+                        <div class="mt-3">
+                            <p class="fw-bold mb-2">Requisitos digitados:</p>
+                            <div class="bg-light p-3 rounded">
+                                {% if requisitos %}
+                                    <ul class="mb-0">
+                                        {% for requisito in requisitos %}
+                                            <li>{{ requisito.conteudo_texto }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <p class="text-muted mb-0">Nenhum requisito digitado</p>
+                                {% endif %}
+                            </div>
+                        </div>
+
                         <!-- Arquivo de Requisitos -->
                         {% if projeto.arquivo_requisitos %}
-                        <div class="mb-3">
+                        <div class="mt-3">
                             <p class="fw-bold mb-2">Arquivo anexado:</p>
                             <a href="{{ projeto.arquivo_requisitos.url }}" class="btn btn-outline-primary btn-sm" download>
                                 <i class="fas fa-download me-2"></i>Baixar Arquivo
                             </a>
                         </div>
                         {% endif %}
-
-                        <!-- Requisitos Digitados -->
-                        <div class="mt-3">
-                            <p class="fw-bold mb-2">Requisitos digitados:</p>
-                            <div class="bg-light p-3 rounded">
-                                {% if projeto.requisitos_digitados %}
-                                    <pre class="mb-0">{{ projeto.requisitos_digitados }}</pre>
-                                {% else %}
-                                    <p class="text-muted mb-0">Nenhum requisito digitado</p>
-                                {% endif %}
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Informações adicionais -->
