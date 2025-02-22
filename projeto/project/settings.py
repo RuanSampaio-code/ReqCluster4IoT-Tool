@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'usuarios',
-    'projetos',
+    'projetos.apps.ProjetosConfig',  # Deve vir antes de requisitos
     'requisitos',
     'widget_tweaks',
 ]
@@ -103,8 +103,22 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    },
+    'mongodb': {
+        'ENGINE': 'djongo',
+        'NAME': 'requisitos_db',  # Nome do banco MongoDB
+        'CLIENT': {
+            'host': 'mongodb://localhost:27017/',  # URL de conexão com o MongoDB
+            'username': '',  # Opcional
+            'password': '',  # Opcional
+        },
     }
 }
+
+DATABASE_ROUTERS = ['requisitos.routers.MongoDBRouter']
+#DATABASE_ROUTERS = ['requisitos.db_router.MongoRouter']
+
+
 
 
 # Password validation

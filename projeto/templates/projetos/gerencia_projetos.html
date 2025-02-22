@@ -100,34 +100,44 @@
                     </div>
 
                     <div id="formset">
-                        {{ formset.management_form }}
+                        {{ formset.management_form }}  <!-- Certifique-se de que este formset está sendo renderizado corretamente -->
+                        <!-- Adicione IDs explícitos se necessário -->
+                        <div id="id_requisitos-TOTAL_FORMS" style="display: none;"></div>
                         <h5 class="mt-3">Requisitos</h5>
                         <div id="requisitos-container">
                             {% for form in formset %}
                                 <div class="input-group mb-3 requisito-item">
-                                    {% render_field form.requisito class="form-control" %}
+                                    {{ form.requisito }}  <!-- Ou use {{ form.as_p }} para renderizar todos os campos -->
                                     <button type="button" class="btn btn-outline-danger remove-requisito">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
                             {% endfor %}
                         </div>
-                    
-                        <!-- Template oculto para novos formulários -->
                         <div class="empty-form" style="display: none;">
                             <div class="input-group mb-3 requisito-item">
-                                {% render_field formset.empty_form.requisito class="form-control" %}
+                                <input type="text" name="requisitos-__prefix__-requisito" 
+                                       class="form-control" placeholder="Digite o requisito" id="id_requisitos-__prefix__-requisito">
                                 <button type="button" class="btn btn-outline-danger remove-requisito">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
                         </div>
-                    
-                        <button type="button" class="btn btn-outline-success" id="add-requisito">
+                        <button type="button" class="btn btn-outline-success mb-3" id="add-requisito">
                             <i class="fas fa-plus"></i> Adicionar Requisito
                         </button>
-                    </div>
                     
+                    
+                    
+                        <!-- Seção de Upload de Arquivo fora do container de requisitos -->
+                        <div class="mb-3">
+                            <label class="form-label">Upload de Arquivo (Opcional)</label>
+                            <input type="file" name="arquivo" class="form-control" id="id_arquivo">
+                        </div>
+                    </div>
+
+
+                
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -143,17 +153,31 @@
     document.addEventListener("DOMContentLoaded", function() {
     const container = document.getElementById("requisitos-container");
     const addButton = document.getElementById("add-requisito");
-    const totalForms = document.querySelector("[name$='TOTAL_FORMS']"); // Pega o campo correto
+    const totalForms = document.getElementById("id_requisitos-TOTAL_FORMS"); // Use o ID correto
+    
+    function updateFormIndices() {
+        // Atualiza todos os índices e o campo TOTAL_FORMS
+        const forms = container.querySelectorAll('.requisito-item');
+        totalForms.value = forms.length;
+        
+        forms.forEach((form, index) => {
+            // Atualiza todos os campos do formulário
+            form.querySelectorAll('input, select, textarea').forEach(element => {
+                if (element.name) {
+                    element.name = element.name.replace(/requisitos-\d+/, `requisitos-${index}`);
+                }
+                if (element.id) {
+                    element.id = element.id.replace(/id_requisitos-\d+/, `id_requisitos-${index}`);
+                }
+            });
+        });
+    }
 
     function cloneForm() {
-        const formIdx = parseInt(totalForms.value);
-        const emptyForm = document.querySelector('.empty-form').cloneNode(true);
-
-        emptyForm.innerHTML = emptyForm.innerHTML.replace(/__prefix__/g, formIdx);
-        emptyForm.style.display = 'block'; // Mostra o novo formulário
-
-        container.appendChild(emptyForm);
-        totalForms.value = formIdx + 1; // Atualiza o contador de forms
+        const newForm = document.querySelector('.empty-form').cloneNode(true);
+        newForm.innerHTML = newForm.innerHTML.replace(/__prefix__/g, totalForms.value);
+        container.appendChild(newForm);
+        updateFormIndices(); // Atualiza os índices após adicionar
     }
 
     addButton.addEventListener("click", cloneForm);
@@ -161,9 +185,12 @@
     container.addEventListener("click", function(event) {
         if (event.target.closest(".remove-requisito")) {
             event.target.closest(".requisito-item").remove();
-            totalForms.value = document.querySelectorAll(".requisito-item").length;
+            updateFormIndices(); // Atualiza os índices após remover
         }
     });
+
+    // Inicializa os índices caso haja forms pré-existentes
+    updateFormIndices();
 });
 
 </script>
