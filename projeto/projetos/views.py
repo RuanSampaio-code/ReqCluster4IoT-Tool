@@ -8,7 +8,6 @@ from requisitos.models import Requisito
 
 
 
-
 @login_required
 def criar_projeto(request):
     if request.method == "POST":
@@ -70,10 +69,19 @@ def listar_projetos(request):
     projetos = Projeto.objects.filter(usuario=request.user)
     return render(request, 'projetos/listar.html', {'projetos': projetos})
 
+
+
+
+
 @login_required
 def detalhes_projeto(request, id):
     projeto = get_object_or_404(Projeto, id=id, usuario=request.user)
-    return render(request, 'projetos/detalhes_projeto.html', {'projeto': projeto})
+    requisitos = Requisito.objects.filter(projeto_id=projeto.id)  # Busca os requisitos do projeto
+
+    return render(request, 'projetos/detalhes_projeto.html', {
+        'projeto': projeto,
+        'requisitos': requisitos  # Passa os requisitos para o template
+    })
 
 
 

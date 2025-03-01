@@ -1,0 +1,20 @@
+{   
+    "_id": "Object_id",
+    "requisitos":{
+        "1": "The system shall ...",
+        "2": "The system shall ..."
+    },
+    "funcionais": ["1", "2"],
+    "não funcionais": {
+        "classe1": ["1"],
+        "classe2": ["2"]
+    },
+    "grupos":{
+        "grupo1": ["1", "2"]
+    },
+    "característica_grupo":{
+        "característica1": ["grupos"],
+        "característica2":["grupos"]
+    },
+    "status": ["Pendente de agrupamento", "agrupamento automático", "agrupamento personalizado"]
+}

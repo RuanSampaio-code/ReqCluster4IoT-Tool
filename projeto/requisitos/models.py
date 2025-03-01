@@ -8,8 +8,7 @@ class Requisito(models.Model):
         ("nao_funcional", "Não Funcional"),
     ]
 
-    # Substitua ForeignKey por IntegerField (armazena o ID do projeto)
-    #projeto_id = models.IntegerField()  # ID do Projeto do SQLite
+
     projeto_id = models.IntegerField(default=0)  # Adicione default=0
     requisito = models.CharField(max_length=255)
     arquivo = models.FileField(upload_to="requisitos/", blank=True, null=True)

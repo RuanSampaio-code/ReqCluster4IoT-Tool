@@ -60,12 +60,13 @@
                                 {% if requisitos %}
                                     <ul class="mb-0">
                                         {% for requisito in requisitos %}
-                                            <li>{{ requisito.conteudo_texto }}</li>
+                                            <li>{{ requisito.requisito }}</li>
                                         {% endfor %}
                                     </ul>
                                 {% else %}
                                     <p class="text-muted mb-0">Nenhum requisito digitado</p>
                                 {% endif %}
+
                             </div>
                         </div>
 
