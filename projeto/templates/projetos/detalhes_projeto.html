@@ -53,32 +53,33 @@
                             <i class="fas fa-tasks me-2"></i>Requisitos
                         </h5>
                         
-                        <!-- Lista de Requisitos Digitados -->
-                        <div class="mt-3">
-                            <p class="fw-bold mb-2">Requisitos digitados:</p>
-                            <div class="bg-light p-3 rounded">
-                                {% if requisitos %}
-                                    <ul class="mb-0">
-                                        {% for requisito in requisitos %}
-                                            <li>{{ requisito.requisito }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                {% else %}
-                                    <p class="text-muted mb-0">Nenhum requisito digitado</p>
-                                {% endif %}
+                        
+                        
 
+                        <div class="mt-3">
+                            <div class="bg-light p-3 rounded">
+                                {% if requisito_doc.requisitos %}
+                                    <div class="list-group">
+                                        {% for key, req in requisito_doc.requisitos.items %}
+                                            <div class="list-group-item list-group-item-action mb-2 rounded d-flex align-items-start">
+                                                <div class="ms-2 me-auto">
+                                                    <div class="fw-bold">
+                                                        <i class="fas fa-chevron-circle-right text-primary "></i>
+                                                        Requisito #{{ key }}
+                                                    </div>
+                                                    <span class="text-muted">{{ req.texto }}</span>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-warning mb-0">
+                                        <i class="fas fa-exclamation-circle me-2"></i>Nenhum requisito cadastrado
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
-
-                        <!-- Arquivo de Requisitos -->
-                        {% if projeto.arquivo_requisitos %}
-                        <div class="mt-3">
-                            <p class="fw-bold mb-2">Arquivo anexado:</p>
-                            <a href="{{ projeto.arquivo_requisitos.url }}" class="btn btn-outline-primary btn-sm" download>
-                                <i class="fas fa-download me-2"></i>Baixar Arquivo
-                            </a>
-                        </div>
-                        {% endif %}
+                
                     </div>
 
                     <!-- Informações adicionais -->

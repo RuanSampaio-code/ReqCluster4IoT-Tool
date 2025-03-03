@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -6,7 +7,7 @@ from .forms import ProjetoForm
 from requisitos.forms import RequisitoFormSet  # Importa o formset de requisitos
 from requisitos.models import Requisito
 
-
+from django.core.files.storage import FileSystemStorage
 
 @login_required
 def criar_projeto(request):
@@ -15,24 +16,34 @@ def criar_projeto(request):
         formset = RequisitoFormSet(request.POST, request.FILES)
         
         if form.is_valid() and formset.is_valid():
-            # Salva o projeto no SQLite
             projeto = form.save(commit=False)
             projeto.usuario = request.user
             projeto.save()
-             # Processar arquivo separadamente
-            arquivo = request.FILES.get('arquivo')
 
-            # Salva os requisitos no MongoDB
-            for requisito_form in formset:
-                if requisito_form.has_changed():
-                    dados = requisito_form.cleaned_data
-                    if dados.get('requisito') or dados.get('arquivo'):
-                        Requisito.objects.using('mongodb').create(
-                            projeto_id=projeto.id,  # Armazena o ID do projeto
-                            requisito=dados.get('requisito'),
-                            arquivo=dados.get('arquivo'),
-                            tipo=dados.get('tipo')
-                        )
+            requisitos_data = {}
+            counter = 1
+
+            for req_form in formset:
+                dados = req_form.cleaned_data
+                req_text = dados.get('requisito')
+
+                if req_text:
+                    key = str(counter)
+                    requisitos_data[key] = {'texto': req_text}  # Estrutura direta
+                    counter += 1
+
+            # Cria/atualiza UM documento com todos os campos
+            Requisito.objects.using('mongodb').update_or_create(
+                projeto_id=projeto.id,
+                defaults={
+                    'requisitos': requisitos_data,
+                    'funcionais': {},  # Ou dados reais se necessário
+                    'nao_funcionais': {},
+                    'grupos': {},
+                    'caracteristica_grupo': {},
+                    #'status': {}
+                }
+            )
 
             messages.success(request, 'Projeto e requisitos criados!')
             return redirect('gerencia_projetos')
@@ -46,7 +57,6 @@ def criar_projeto(request):
         'form': form,
         'formset': formset
     })
-
 
 
 
@@ -72,7 +82,7 @@ def listar_projetos(request):
 
 
 
-
+""" 
 @login_required
 def detalhes_projeto(request, id):
     projeto = get_object_or_404(Projeto, id=id, usuario=request.user)
@@ -82,7 +92,20 @@ def detalhes_projeto(request, id):
         'projeto': projeto,
         'requisitos': requisitos  # Passa os requisitos para o template
     })
+ """
 
+
+@login_required
+def detalhes_projeto(request, id):
+    projeto = get_object_or_404(Projeto, id=id, usuario=request.user)
+    
+    # Busca o DOCUMENTO de requisitos (não uma lista)
+    requisito_doc = get_object_or_404(Requisito, projeto_id=projeto.id)
+
+    return render(request, 'projetos/detalhes_projeto.html', {
+        'projeto': projeto,
+        'requisito_doc': requisito_doc  # Passa o documento completo
+    })
 
 
 
