@@ -123,7 +123,6 @@ def gerencia_usuarios(request):
 #Editar usuario
 @login_required
 def editar_usuario(request, user_id):
-
     
     # Obtém o usuário a ser editado
     usuario = get_object_or_404(CustomUser, pk=user_id)

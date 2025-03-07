@@ -1,61 +1,44 @@
-{% load static %}
+{% extends 'usuarios/base_login.html' %}
 {% load widget_tweaks %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-    <div class="container vh-100 d-flex justify-content-center align-items-center">
-        <div class="card shadow p-4" style="width: 100%; max-width: 400px;">
-            <h1 class="text-center mb-4">Login</h1>
+{% block title %}Login{% endblock %}
 
+{% block content %}
+<div class="card shadow p-4" style="width: 100%; max-width: 400px;">
+    <h1 class="text-center mb-4">Login</h1>
 
-            <!-- Exibir mensagens de sucesso ou erro -->
-            {% if messages %}
-            {% for message in messages %}
-                <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
-                    {{ message }}
-                </div>
-            {% endfor %}
-            {% endif %}
+    <!-- Exibir mensagens de sucesso ou erro -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
 
-            {% if error %}
-                <div class="alert alert-danger" role="alert">
-                    {{ error }}
-                </div>
-            {% endif %}
-
-
-            <form method="post">
-                {% csrf_token %}
-
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email:</label>
-                    <input type="text" id="email" name="email" class="form-control" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="password" class="form-label">Senha:</label>
-                    <input type="password" id="password" name="password" class="form-control" required>
-                </div>
-
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-dark">Entrar</button>
-                </div>
-
-            </form>
-
-        
-            <p class="text-center mt-3">Não tem uma conta? <a href="{% url 'registrar' %}">Registrar-se</a></p>
+    {% if error %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
         </div>
-    </div>
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="email" class="form-label">Email:</label>
+            <input type="text" id="email" name="email" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Senha:</label>
+            <input type="password" id="password" name="password" class="form-control" required>
+        </div>
+
+        <div class="d-grid">
+            <button type="submit" class="btn btn-dark">Entrar</button>
+        </div>
+    </form>
+
+    <p class="text-center mt-3">Não tem uma conta? <a href="{% url 'registrar' %}">Registrar-se</a></p>
+</div>
+{% endblock %}
