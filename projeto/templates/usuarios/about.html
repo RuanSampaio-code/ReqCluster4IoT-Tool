@@ -1,0 +1,73 @@
+{% extends 'usuarios/base_login.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Sobre o ReqM4IoT{% endblock %}
+
+{% block content %}
+<div class="card shadow-lg p-4 align-items-center" style="max-width: 1500px; margin-top: 500px;">
+    <div class="card-body">
+        <h1 class="text-center mb-4 display-4 text-dark" >Sobre o ReqM4IoT</h1>
+
+        <div class="row g-4">
+            <!-- Seção ReqM4IoT -->
+            <div class="col-12">
+                <div class="bg-light p-3 rounded-3">
+                    <h2 class="mb-3 text-primary">O que é ReqM4IoT?</h2>
+                    <p >ReqM4IoT é uma ferramenta online desenvolvida para apoiar desenvolvedores (principalmente aqueles que estejam desenvolvendo sistemas Internet of Things - IoT) na realização das etapas de elicitação e análise de requisitos e modelagem de software.</p>
+                    <p>Desenvolvedores distribuídos geograficamente podem trabalhar juntos em um espaço de trabalho compartilhado, organizando os requisitos e os diagramas. Além de fornecer técnicas específicas para análise de requisitos para IoT (ReqMLSCity) e modelagem de software para IoT (SysIoTML), o sistema oferece várias funcionalidades que podem auxiliar e melhorar o processo de desenvolvimento de software.</p>
+                </div>
+            </div>
+
+            <!-- Seção SysIoTML -->
+            <div class="col-12">
+                <div class="bg-light p-3 rounded-3">
+                    <h2 class="mb-3 text-primary">O que é SysIoTML?</h2>
+                    <p>O SysIoTML é uma extensão do SysML (Systems Modeling Language), uma linguagem de propósito geral para modelagem de sistemas de aplicações de engenharia. O SysIoTML considera aspectos específicos de Sistemas IoT (comportamento e interatividade) através dos diagramas:</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item bg-light">Caso de Uso</li>
+                        <li class="list-group-item bg-light">Sequência</li>
+                        <li class="list-group-item bg-light">Máquina de Estado</li>
+                        <li class="list-group-item bg-light">Bloco</li>
+                    </ul>
+                    <p class="mt-3">Referência: <a href="https://www.scitepress.org/Link.aspx?doi=10.5220/0011988500003467" target="_blank" class="text-decoration-none">Nascimento et al. (2023)</a></p>
+                </div>
+            </div>
+
+            <!-- Seção ReqMLSCity -->
+            <div class="col-12">
+                <div class="bg-light p-3 rounded-3">
+                    <h2 class="mb-3 text-primary">O que é ReqMLSCity?</h2>
+                    <p>É uma ferramenta pioneira desenvolvida para avaliar requisitos quanto a:</p>
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-4">
+                            <div class="p-2 bg-white rounded text-center">Ambiguidade</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-2 bg-white rounded text-center">Análise Sintática</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-2 bg-white rounded text-center">Análise de Contexto</div>
+                        </div>
+                    </div>
+                    <p>Esta primeira versão foi apresentada e publicada no IV Concurso de Trabalhos de Iniciação Científica parte do Simpósio Brasileiro de Engenharia de Software - SBES 2023. <a href="https://sol.sbc.org.br/index.php/cbsoft_estendido/article/download/26073/25896/" target="_blank" class="text-decoration-none">Acessar publicação</a></p>
+                </div>
+            </div>
+
+            <!-- Referências -->
+            <div class="col-12">
+                <div class="bg-light p-3 rounded-3">
+                    <h2 class="mb-3 text-primary">Referências</h2>
+                    <ol class="list-group list-group-numbered">
+                        <li class="list-group-item d-flex justify-content-between align-items-start bg-light">
+                            <div class="ms-2 me-auto">
+                                Nascimento, R.; Santos, V.; Carvalho, B.; Correia, J.; Rivero, L.; Santos, R.; Silva, F.; Teles, A. and Viana, D. (2023). SysIoTML: A Technique for Modeling Applications in the Context of IoT. In Proceedings of the 25th International Conference on Enterprise Information Systems - Volume 2: ICEIS.
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

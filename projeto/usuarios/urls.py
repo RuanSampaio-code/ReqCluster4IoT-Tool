@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.login_view, name='login'),
+    path('about/', views.about, name='about'),  # Nome da URL em inglês
     path('registrar/', views.registrar_usuario, name='registrar'),
     path('home/usuario/', views.gerencia_usuarios, name='gerencia_usuarios'),
     path('home/usuario/editar_perfil/', views.editar_perfil, name='editar_perfil'),

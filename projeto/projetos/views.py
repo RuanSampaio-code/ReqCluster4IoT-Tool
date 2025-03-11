@@ -14,6 +14,7 @@ def criar_projeto(request):
     if request.method == "POST":
         form = ProjetoForm(request.POST)
         formset = RequisitoFormSet(request.POST, request.FILES)
+        arquivo_txt = request.FILES.get('arquivo_txt')  # Obtém o arquivo enviado
         
         if form.is_valid() and formset.is_valid():
             projeto = form.save(commit=False)
@@ -31,6 +32,16 @@ def criar_projeto(request):
                     key = str(counter)
                     requisitos_data[key] = {'texto': req_text}  # Estrutura direta
                     counter += 1
+
+            # 2. Se um arquivo TXT foi enviado, processá-lo
+            if arquivo_txt:
+                requisitos_txt = arquivo_txt.read().decode('utf-8').splitlines()
+                for linha in requisitos_txt:
+                    linha = linha.strip()
+                    if linha:
+                        key = str(counter)
+                        requisitos_data[key] = {'texto': linha}
+                        counter += 1
 
             # Cria/atualiza UM documento com todos os campos
             Requisito.objects.using('mongodb').update_or_create(
