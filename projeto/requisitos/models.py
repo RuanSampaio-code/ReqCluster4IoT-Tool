@@ -5,7 +5,7 @@ from django.conf import settings
 
 # Adicione esta função no topo do arquivo
 def status_default():
-    return ["Pendente de agrupamento", "agrupamento automático", "agrupamento personalizado"]
+    return ["Pendente de agrupamento"]
 class Requisito(models.Model):
     projeto_id = models.IntegerField(unique=True)  # Único por projeto
     requisitos = models.JSONField()  # Armazenará {"1": "texto", "2": "url_arquivo", ...}

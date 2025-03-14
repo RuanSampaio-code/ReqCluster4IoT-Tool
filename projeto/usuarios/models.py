@@ -8,7 +8,12 @@ class CustomUser(AbstractUser):
         ('admin', 'Administrador'),
         ('normal', 'Usuário Normal'),
     ]
-    tipo_usuario = models.CharField(max_length=10, choices=TIPOS_USUARIO, default='normal')
+    tipo_usuario = models.CharField(
+        max_length=10,
+        choices=TIPOS_USUARIO,
+        default='normal',
+        blank=True  # Isso permite que o campo seja vazio no admin, mas o formulário precisa tratar
+    )
 
     def __str__(self):
         return self.username

@@ -29,7 +29,7 @@ def login_view(request):
     return render(request, 'usuarios/login.html')
 
 
-
+#tela sobr
 def about(request):
     return render(request, 'usuarios/about.html')  # Nome do template em inglês
 

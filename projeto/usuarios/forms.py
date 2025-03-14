@@ -6,9 +6,14 @@ class RegistroUsuarioForm(forms.ModelForm):
     senha = forms.CharField(widget=forms.PasswordInput, label="Senha")
     confirmar_senha = forms.CharField(widget=forms.PasswordInput, label="Confirmar Senha")
 
+
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'tipo_usuario']  # Removi 'senha' daqui
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['tipo_usuario'].required = False  # Torna o campo opcional no formulário
 
     def clean(self):
         cleaned_data = super().clean()
@@ -17,6 +22,10 @@ class RegistroUsuarioForm(forms.ModelForm):
 
         if senha and confirmar_senha and senha != confirmar_senha:
             raise forms.ValidationError("As senhas não coincidem.")
+        
+        # Define 'normal' como padrão se o campo estiver vazio
+        if not cleaned_data.get('tipo_usuario'):
+            cleaned_data['tipo_usuario'] = 'normal'
         
         return cleaned_data
 
