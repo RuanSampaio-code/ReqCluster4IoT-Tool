@@ -155,3 +155,4 @@ def deletar_projeto(request, id):
     projeto.delete()
     messages.success(request, 'Projeto excluído com sucesso!')
     return redirect('gerencia_projetos')
+

@@ -1,0 +1,32 @@
+{
+    "_id": {
+      "$oid": "67cdd7f88832539cb59b7b02"
+    },
+    "projeto_id": 50,
+    "requisitos": {
+      "1": {
+        "texto": "requisito 1"
+      },
+      "2": {
+        "texto": "requisito 2"
+      },
+      "3": {
+        "texto": "requisito 3"
+      },
+      "4": {
+        "texto": "requisito 4"
+      }
+    },
+    "funcionais": {},
+    "nao_funcionais": {},
+    "grupos": {
+        "caracteristica1": ["requisito-1", "requisito-2"],
+        "caracteristica2": ["requisito-3", "requisito-4"]
+    },
+    "caracteristica_grupo": {},
+    "status": [
+      "Pendente de agrupamento",
+      "agrupamento automático",
+      "agrupamento personalizado"
+    ]
+}

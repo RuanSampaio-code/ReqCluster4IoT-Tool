@@ -23,4 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),  # Rota do Django Admin
     path('', include('usuarios.urls')),  # Inclui as URLs do app 'usuarios'
     path('', include('projetos.urls')),  # Inclui as URLs do app 'projetos'
+    path('', include('requisitos.urls')),
+   # Inclui as URLs do app 'requisitos'
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

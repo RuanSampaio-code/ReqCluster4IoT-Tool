@@ -1,0 +1,37 @@
+{
+    "nodeData": {
+      "id": "67cdd7f88832539cb59b7b02",
+      "topic": "nome do projeto",
+      "children": [
+        {
+          "id": "caracteristica1",
+          "topic": "caracteristica1",
+          "children": [
+            {
+              "id": "requisito-1",
+              "topic": "requisito-1"
+            },
+            {
+              "id": "requisito-2",
+              "topic": "requisito-2"
+            }
+          ]
+        },
+        {
+          "id": "caracteristica2",
+          "topic": "caracteristica2",
+          "children": [
+            {
+              "id": "requisito-3",
+              "topic": "requisito-3"
+            },
+            {
+              "id": "requisito-4",
+              "topic": "requisito-4"
+            }
+          ]
+        }
+      ]
+    }
+  }
+  
