@@ -24,6 +24,17 @@
                 </div>
             </div>
 
+            {% if messages %}
+            <div class="container mt-3">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
             <!-- Card de detalhes -->
             <div class="card border-0 shadow-lg">
                 <div class="card-header bg-primary text-white">
@@ -79,32 +90,25 @@
                                                         </span>
                                                     </td>
                                                     <td>{{ req.grupo|default:"-" }}</td>
-                                                    <td>
+                                                    <!-- <td>
                                                         <form action="{% url 'remover_requisito' %}" method="POST"  onsubmit="return confirmarExclusao()" style="display: inline;">
                                                             {% csrf_token %}
-                                                            <input type="hidden" name="projeto_id" value="{{ requisito_doc.projeto_id }}">  <!-- Alterado aqui -->
+                                                            <input type="hidden" name="projeto_id" value="{{ requisito_doc.projeto_id }}">  
                                                             <input type="hidden" name="requisito_key" value="{{ key }}">
-                                                            <button type="submit" class="btn btn-danger btn-sm">Remover</button>
+                                                            <button type="submit" class="btn btn-danger btn-sm" onclick="abrirModalConfirmacao('{{ requisito_doc.projeto_id }}', '{{ key }}')">Remover</button>
                                                         </form>
+                                                    </td> -->
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-sm" 
+                                                            onclick="abrirModalConfirmacao('{{ requisito_doc.projeto_id }}', '{{ key }}')">
+                                                            Remover
+                                                        </button>
                                                     </td>
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>
                                         </table>
                                     </div>
-                                    <!-- <div class="list-group">
-                                        {% for key, req in requisito_doc.requisitos.items %}
-                                            <div class="list-group-item list-group-item-action mb-2 rounded d-flex align-items-start">
-                                                <div class="ms-2 me-auto">
-                                                    <div class="fw-bold">
-                                                        <i class="fas fa-chevron-circle-right text-primary "></i>
-                                                        Requisito #{{ key }}
-                                                    </div>
-                                                    <span class="text-muted">{{ req.texto }}</span>
-                                                </div>
-                                            </div>
-                                        {% endfor %}
-                                    </div> -->
                                 {% else %}
                                     <div class="alert alert-warning mb-0">
                                         <i class="fas fa-exclamation-circle me-2"></i>Nenhum requisito cadastrado
@@ -160,11 +164,61 @@
         </div>
     </div>
 </div>
-
+<!-- Modal de Confirmação de Exclusão -->
+<div class="modal fade" id="confirmacaoModal" tabindex="-1" aria-labelledby="confirmacaoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmacaoModalLabel">Confirmar Exclusão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                Tem certeza que deseja excluir este requisito?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="btnConfirmarExclusao">Remover</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
-    function confirmarExclusao() {
-        return confirm("Tem certeza que deseja excluir este requisito?");
+    
+    let projetoId, requisitoKey;
+
+    function abrirModalConfirmacao(projId, reqKey) {
+        projetoId = projId;
+        requisitoKey = reqKey;
+        let modal = new bootstrap.Modal(document.getElementById('confirmacaoModal'));
+        modal.show();
     }
+
+    document.getElementById('btnConfirmarExclusao').addEventListener('click', function() {
+        let form = document.createElement('form');
+        form.method = "POST";
+        form.action = "{% url 'remover_requisito' %}";
+
+        let csrf = document.createElement('input');
+        csrf.type = "hidden";
+        csrf.name = "csrfmiddlewaretoken";
+        csrf.value = "{{ csrf_token }}";
+        form.appendChild(csrf);
+
+        let inputProjeto = document.createElement('input');
+        inputProjeto.type = "hidden";
+        inputProjeto.name = "projeto_id";
+        inputProjeto.value = projetoId;
+        form.appendChild(inputProjeto);
+
+        let inputRequisito = document.createElement('input');
+        inputRequisito.type = "hidden";
+        inputRequisito.name = "requisito_key";
+        inputRequisito.value = requisitoKey;
+        form.appendChild(inputRequisito);
+
+        document.body.appendChild(form);
+        form.submit();
+    });
 </script>
 {% endblock %}

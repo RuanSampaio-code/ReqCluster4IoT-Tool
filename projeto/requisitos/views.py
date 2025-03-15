@@ -2,7 +2,9 @@ from django.shortcuts import redirect, get_object_or_404
 from django.contrib import messages
 from .models import Requisito
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def remover_requisito(request):
     if request.method == "POST":
         projeto_id = request.POST.get("projeto_id")
