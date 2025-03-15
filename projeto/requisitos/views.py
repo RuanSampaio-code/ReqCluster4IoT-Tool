@@ -26,3 +26,32 @@ def remover_requisito(request):
         return redirect(f'/projetos/{projeto_id}/')
 
     return JsonResponse({"error": "Método não permitido"}, status=405)
+
+
+
+@login_required
+def adicionar_requisito(request):
+    if request.method == "POST":
+        projeto_id = request.POST.get("projeto_id")
+        texto = request.POST.get("requisito_texto")
+        #tipo = request.POST.get("requisito_tipo", "Não especificado")
+        #grupo = request.POST.get("requisito_grupo", "-")
+
+        requisito_doc = get_object_or_404(Requisito, projeto_id=projeto_id)
+
+        # Criando uma chave única para o novo requisito
+        novo_id = str(len(requisito_doc.requisitos) + 1)
+
+        # Adicionando ao JSON
+        requisito_doc.requisitos[novo_id] = {
+            "texto": texto,
+            #"tipo": tipo,
+            #"grupo": grupo
+        }
+
+        # Atualizando no banco
+        Requisito.objects.filter(id=requisito_doc.id).update(requisitos=requisito_doc.requisitos)
+
+        return JsonResponse({"success": True})
+
+    return JsonResponse({"error": "Método não permitido"}, status=405)

@@ -119,6 +119,13 @@
                 
                     </div>
 
+                    <!-- Botão para abrir o modal de adição de requisito -->
+                    <div class="text-end mt-3">
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#adicionarRequisitoModal">
+                            <i class="fas fa-plus"></i> Adicionar Requisito
+                        </button>
+                    </div>
+
                     <!-- Informações adicionais -->
                     <div class="row text-muted small mt-4">
                         <div class="col-md-6">
@@ -164,6 +171,7 @@
         </div>
     </div>
 </div>
+
 <!-- Modal de Confirmação de Exclusão -->
 <div class="modal fade" id="confirmacaoModal" tabindex="-1" aria-labelledby="confirmacaoModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -178,6 +186,33 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-danger" id="btnConfirmarExclusao">Remover</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal para Adicionar Requisito -->
+<div class="modal fade" id="adicionarRequisitoModal" tabindex="-1" aria-labelledby="adicionarRequisitoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="adicionarRequisitoLabel">Adicionar Novo Requisito</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formAdicionarRequisito">
+                    {% csrf_token %}
+                    <input type="hidden" name="projeto_id" value="{{ requisito_doc.projeto_id }}">
+
+                    <div class="mb-3">
+                        <label for="requisito_texto" class="form-label">Nome do Requisito</label>
+                        <input type="text" class="form-control" id="requisito_texto" name="requisito_texto" required>
+                    </div>
+                    
+                
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </form>
             </div>
         </div>
     </div>
@@ -219,6 +254,30 @@
 
         document.body.appendChild(form);
         form.submit();
+    });
+
+    document.getElementById('formAdicionarRequisito').addEventListener('submit', function(event) {
+        event.preventDefault(); // Impede o recarregamento da página
+        
+        let formData = new FormData(this);
+
+        fetch("{% url 'adicionar_requisito' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}"
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Requisito adicionado com sucesso!");
+                location.reload(); // Recarregar a página para exibir o novo requisito
+            } else {
+                alert("Erro ao adicionar requisito!");
+            }
+        })
+        .catch(error => console.error("Erro:", error));
     });
 </script>
 {% endblock %}
