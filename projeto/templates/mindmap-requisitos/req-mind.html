@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa Mental - Agrupamento de Requisitos</title>
+  <script src="https://cdn.jsdelivr.net/npm/mind-elixir@0.10.0/dist/mind-elixir.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #f0f0f0;
+    }
+    #mindmap {
+      width: 90%;
+      height: 70vh;
+      border: 2px solid red;
+      background-color: #fff;
+    }
+    #saveButton {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #output {
+      margin-top: 20px;
+      width: 90%;
+      height: 100px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      padding: 10px;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div id="mindmap"></div>
+  <button id="saveButton">Salvar</button>
+  <pre id="output">Dados atualizados aparecerão aqui...</pre>
+  <script>
+    const projetoId = "{{ projeto_id }}";
+    const data = JSON.parse('{{ dados_json|escapejs }}');
+
+    console.log('Dados carregados:', data);
+
+    // Função para criar a estrutura inicial do mindmap
+    function criarEstruturaInicial() {
+        const root = {
+            id: 'root',
+            topic: `Requisitos do Projeto ${projetoId}`,
+            children: []
+        };
+
+        // Adiciona requisitos não agrupados
+        if (data.requisitos) {
+            Object.entries(data.requisitos).forEach(([reqId, req]) => {
+                root.children.push({
+                    id: reqId,
+                    topic: req.texto,
+                    parent: 'root'
+                });
+            });
+        }
+
+        // Adiciona grupos existentes
+        if (data.grupos) {
+            Object.entries(data.grupos).forEach(([grupoId, grupo]) => {
+                const nodeGrupo = {
+                    id: grupoId,
+                    topic: grupo.nome || `Grupo ${grupoId}`,
+                    parent: 'root',
+                    children: []
+                };
+
+                if (grupo.requisitos) {
+                    grupo.requisitos.forEach(reqId => {
+                        nodeGrupo.children.push({
+                            id: reqId,
+                            topic: data.requisitos[reqId]?.texto || reqId
+                        });
+                    });
+                }
+
+                root.children.push(nodeGrupo);
+            });
+        }
+
+        return { nodeData: root };
+    }
+
+    const mind = new MindElixir({
+        el: '#mindmap',
+        direction: MindElixir.LEFT,
+        data: criarEstruturaInicial(),
+        draggable: true,
+        contextMenu: true,
+        toolBar: true,
+        nodeMenu: true,
+        keypress: true,
+        editable: true,
+    });
+
+    mind.init();
+
+    // Função para salvar a nova estrutura
+    async function saveUpdatedData() {
+        const updatedData = mind.getAllData();
+        const newStructure = processMindMapData(updatedData);
+        
+        document.getElementById('output').textContent = JSON.stringify(newStructure, null, 2);
+        
+        // Enviar para o backend
+        try {
+            const response = await fetch(`/sua-rota-de-atualizacao/${projetoId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify(newStructure)
+            });
+            
+            if (response.ok) {
+                alert('Agrupamento salvo com sucesso!');
+            }
+        } catch (error) {
+            console.error('Erro ao salvar:', error);
+        }
+    }
+
+    // Processar a estrutura do mindmap para o formato do MongoDB
+    function processMindMapData(mindData) {
+        const processed = {
+            grupos: {},
+            requisitos: data.requisitos || {}
+        };
+
+        mindData.nodeData.children.forEach(child => {
+            if (child.children) {
+                processed.grupos[child.id] = {
+                    nome: child.topic,
+                    requisitos: child.children.map(req => req.id)
+                };
+            }
+        });
+
+        return processed;
+    }
+
+    document.getElementById('saveButton').addEventListener('click', saveUpdatedData);
+</script>
+
+</body>
+</html>

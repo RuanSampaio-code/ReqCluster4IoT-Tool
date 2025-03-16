@@ -67,7 +67,10 @@
                             <div>
                                 <button type="button" class="btn btn-outline-secondary me-2">Classificação</button>
                                 <button type="button" class="btn btn-outline-secondary me-2">Agrupamento</button>
-                                <button type="button" class="btn btn-outline-secondary">Visualização de agrupamento</button>
+                                <a href="{% url 'visualizacao_agrupamento' projeto.id %}">
+                                    <button type="button" class="btn btn-outline-secondary"> Visualização de agrupamento</button>
+                                </a>
+                                
                             </div>
                         </div>
                     
