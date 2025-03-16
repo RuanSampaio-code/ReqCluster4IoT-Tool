@@ -48,7 +48,7 @@
     console.log('Dados carregados:', data);
 
     // Função para criar a estrutura inicial do mindmap
-    function criarEstruturaInicial() {
+    /* function criarEstruturaInicial() {
         const root = {
             id: 'root',
             topic: `Requisitos do Projeto ${projetoId}`,
@@ -86,6 +86,42 @@
                 }
 
                 root.children.push(nodeGrupo);
+            });
+        }
+
+        return { nodeData: root };
+    } */
+
+    // Função para criar a estrutura inicial do mindmap
+    function criarEstruturaInicial() {
+        const root = {
+            id: data._id || 'root', // Usa o ID do MongoDB como ID do nó raiz
+            topic: `Projeto ${projetoId}`, // Ou use data.nome se existir
+            children: []
+        };
+
+        // Adiciona grupos/características
+        if (data.grupos) {
+            Object.entries(data.grupos).forEach(([grupoId, requisitosIds]) => {
+                const grupoNode = {
+                    id: grupoId,
+                    topic: grupoId, // Usa o ID do grupo como nome
+                    children: []
+                };
+
+                // Adiciona requisitos do grupo
+                if (Array.isArray(requisitosIds)) {
+                    requisitosIds.forEach(reqId => {
+                        // Remove possíveis hífens extras (ajuste conforme seu padrão)
+                        const cleanReqId = reqId.replace('requisito-', ''); 
+                        grupoNode.children.push({
+                            id: reqId,
+                            topic: data.requisitos[cleanReqId]?.texto || reqId
+                        });
+                    });
+                }
+
+                root.children.push(grupoNode);
             });
         }
 
@@ -139,17 +175,15 @@
             requisitos: data.requisitos || {}
         };
 
-        mindData.nodeData.children.forEach(child => {
-            if (child.children) {
-                processed.grupos[child.id] = {
-                    nome: child.topic,
-                    requisitos: child.children.map(req => req.id)
-                };
+        mindData.nodeData.children.forEach(grupo => {
+            if (grupo.children) {
+                processed.grupos[grupo.id] = grupo.children.map(req => req.id);
             }
         });
 
         return processed;
     }
+    console.log('Estrutura do MindMap:', criarEstruturaInicial());
 
     document.getElementById('saveButton').addEventListener('click', saveUpdatedData);
 </script>

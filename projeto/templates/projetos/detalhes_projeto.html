@@ -1,7 +1,9 @@
 {% extends 'usuarios/base_home.html' %}
 
 {% load static %}
+{% load grupo_tags %}
 {% load widget_tweaks %}
+
 
 {% block title %}Detalhes do Projeto - {{ projeto.nome }}{% endblock %}
 
@@ -99,7 +101,7 @@
                                                             {{ req.tipo|default:"Não especificado"|title }}
                                                         </span>
                                                     </td>
-                                                    <td>{{ req.grupo|default:"-" }}</td>
+                                                    <td>{{ key|encontrar_grupo:requisito_doc.grupos }}</td>
                                                     
                                                     <td>
                                                         <button type="button" class="btn btn-danger btn-sm" 
