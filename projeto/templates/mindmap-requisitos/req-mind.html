@@ -3,6 +3,101 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa Mental</title>
+  <script src="https://cdn.jsdelivr.net/npm/mind-elixir@0.10.0/dist/mind-elixir.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f0f0f0; text-align: center; }
+    #mindmap { width: 90%; height: 70vh; margin: auto; background-color: #fff; }
+    #saveButton { margin-top: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    #output {
+      margin-top: 20px;
+      text-align: left;
+      width: 90%;
+      height: 100px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      padding: 10px;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h2>Mapa Mental do Projeto {{ projeto_id }}</h2>
+  <div id="mindmap"></div>
+  <button id="saveButton">Salvar Alterações</button>
+  <pre id="output">Dados atualizados aparecerão aqui...</pre>
+  <script>
+    async function loadMindMapData() {
+      try {
+        const response = await fetch(`/api/mindmap/{{ projeto_id }}/`);
+        const data = await response.json();
+  
+        const mind = new MindElixir({
+          el: '#mindmap',
+          direction: MindElixir.LEFT,
+          data: data,
+          draggable: true,
+          contextMenu: true,
+          toolBar: true,
+          nodeMenu: true,
+          keypress: true,
+          editable: true,
+        });
+  
+        mind.init();
+  
+        document.getElementById('saveButton').addEventListener('click', async () => {
+          const updatedData = mind.getAllData();
+          const response = await fetch(`/api/mindmap/save/{{ projeto_id }}/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedData)
+          });
+  
+          const result = await response.json();
+          if (result.status === "success") {
+            alert("Alterações salvas com sucesso!");
+          } else {
+            alert("Erro ao salvar: " + result.error);
+          }
+        });
+
+         // Função para exibir os dados atualizados
+        function displayUpdatedData() {
+            const updatedData = mind.getAllData();
+            const outputElement = document.getElementById('output');
+            outputElement.textContent = JSON.stringify(updatedData, null, 2); // Formata os dados para exibição
+            console.log('Dados atualizados:', updatedData);
+        }
+
+            // Adiciona um listener ao botão "Salvar"
+        const saveButton = document.getElementById('saveButton');
+            saveButton.addEventListener('click', () => {
+            displayUpdatedData();
+            });
+  
+  
+      } catch (error) {
+        console.error("Erro ao carregar o Mind Map:", error);
+      }
+    }
+   
+
+    
+    loadMindMapData();
+  </script>
+  
+</body>
+</html>
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mapa Mental - Agrupamento de Requisitos</title>
   <script src="https://cdn.jsdelivr.net/npm/mind-elixir@0.10.0/dist/mind-elixir.js"></script>
   <style>
@@ -190,3 +285,4 @@
 
 </body>
 </html>
+ -->
