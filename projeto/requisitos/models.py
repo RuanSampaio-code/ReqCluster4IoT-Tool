@@ -9,8 +9,8 @@ def status_default():
 class Requisito(models.Model):
     projeto_id = models.IntegerField(unique=True)  # Único por projeto
     requisitos = models.JSONField()  # Armazenará {"1": "texto", "2": "url_arquivo", ...}
-    funcionais = models.JSONField()
-    nao_funcionais = models.JSONField()
+    funcionais = models.JSONField(default=list)  # Armazena arrays
+    nao_funcionais = models.JSONField(default=list)
     grupos =  models.JSONField()
     caracteristica_grupo = models.JSONField()
     status = models.JSONField(default=status_default)  # Use a função nomeada

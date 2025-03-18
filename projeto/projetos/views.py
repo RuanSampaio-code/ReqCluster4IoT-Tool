@@ -48,8 +48,8 @@ def criar_projeto(request):
                 projeto_id=projeto.id,
                 defaults={
                     'requisitos': requisitos_data,
-                    'funcionais': {},  # Ou dados reais se necessário
-                    'nao_funcionais': {},
+                    'funcionais': [],  # Ou dados reais se necessário
+                    'nao_funcionais': [],
                     'grupos': {},
                     'caracteristica_grupo': {},
                     #'status': {}

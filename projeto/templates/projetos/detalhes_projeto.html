@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load grupo_tags %}
+{% load tipo_tags %}
 {% load widget_tweaks %}
 
 
@@ -97,8 +98,12 @@
                                                     <td>{{ key }}</td>  <!-- ID do requisito -->
                                                     <td>{{ req.texto }}</td>
                                                     <td>
-                                                        <span class="badge bg-primary">
-                                                            {{ req.tipo|default:"Não especificado"|title }}
+                                                        <span class="badge 
+                                                            {% if key|determinar_tipo:requisito_doc == 'funcional' %}bg-success
+                                                            {% elif key|determinar_tipo:requisito_doc == 'não funcional' %}bg-danger
+                                                            {% else %}bg-secondary{% endif %}">
+                                                            
+                                                            {{ key|determinar_tipo:requisito_doc|title }}
                                                         </span>
                                                     </td>
                                                     <td>{{ key|encontrar_grupo:requisito_doc.grupos }}</td>
