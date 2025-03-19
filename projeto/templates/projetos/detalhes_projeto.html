@@ -109,10 +109,17 @@
                                                     <td>{{ key|encontrar_grupo:requisito_doc.grupos }}</td>
                                                     
                                                     <td>
+                                                        <!-- Botão de Editar -->
+                                                        <button type="button" class="btn btn-primary btn-sm me-2" 
+                                                            onclick="abrirModalEdicao('{{ requisito_doc.projeto_id }}', '{{ key }}', `{{ req.texto|escapejs }}`)">
+                                                            Alterar
+                                                        </button>
+
+                                                        <!-- Botão de Remover -->
                                                         <button type="button" class="btn btn-danger btn-sm" 
                                                             onclick="abrirModalConfirmacao('{{ requisito_doc.projeto_id }}', '{{ key }}')">
                                                             Remover
-                                                        </button>
+                                                        </button>                                       
                                                     </td>
                                                 </tr>
                                                 {% endfor %}
@@ -155,7 +162,7 @@
     </div>
 </div>
 
-<!-- Modal de Confirmação de Exclusão -->
+<!-- Modal de Confirmação de Exclusão de projeto -->
 <div class="modal fade" id="confirmarExclusao" tabindex="-1" aria-labelledby="confirmarExclusaoLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -228,6 +235,41 @@
     </div>
 </div>
 
+
+
+
+<!-- Modal de Edição -->
+<div class="modal fade" id="editarRequisitoModal" tabindex="-1" aria-labelledby="editarRequisitoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarRequisitoModalLabel">Editar Requisito</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="formEdicao" method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="textoRequisito" class="form-label">Texto do Requisito</label>
+                        <textarea class="form-control" id="textoRequisito" name="texto" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tipo</label>
+                        <select class="form-select" name="tipo" id="selectTipo">
+                            <option value="funcional">Funcional</option>
+                            <option value="nao_funcional">Não Funcional</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     
     let projetoId, requisitoKey;
@@ -289,5 +331,70 @@
         })
         .catch(error => console.error("Erro:", error));
     });
+
+
+    function abrirModalEdicao(projetoId, requisitoId, textoAtual) {
+    const form = document.getElementById('formEdicao');
+    form.action = `/home/projetos/requisito/editar/${projetoId}/${requisitoId}/`;
+
+    // Preencher dados atuais
+    document.getElementById('textoRequisito').value = textoAtual;
+
+    // Determinar tipo atual
+    const tipoBadge = document.querySelector(`tr:has(button[onclick*="${requisitoId}"]) .badge`);
+    const tipoAtual = tipoBadge.textContent.trim().toLowerCase().includes('funcional') ? 
+        (tipoBadge.textContent.includes('Não') ? 'nao_funcional' : 'funcional') : '';
+
+    document.getElementById('selectTipo').value = tipoAtual;
+
+    // Exibir modal
+    new bootstrap.Modal(document.getElementById('editarRequisitoModal')).show();
+}
+
+document.getElementById('formEdicao').addEventListener('submit', function(event) {
+    event.preventDefault();  // Evitar o envio padrão do formulário
+
+    const form = this;
+    const formData = new FormData(form);
+
+    fetch(form.action, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            // Atualizar a linha na tabela com os novos dados
+            const requisitoId = form.action.split('/').slice(-2, -1)[0];
+            const requisitoRow = document.querySelector(`tr:has(button[onclick*="${requisitoId}"])`);
+            requisitoRow.querySelector('td:nth-child(2)').textContent = formData.get('texto');  // Atualizar o texto
+
+            const tipoSelecionado = formData.get('tipo');
+            const tipoBadge = requisitoRow.querySelector('.badge');
+            tipoBadge.classList.remove('bg-success', 'bg-danger', 'bg-secondary');
+            if (tipoSelecionado === 'funcional') {
+                tipoBadge.classList.add('bg-success');
+            } else if (tipoSelecionado === 'nao_funcional') {
+                tipoBadge.classList.add('bg-danger');
+            } else {
+                tipoBadge.classList.add('bg-secondary');
+            }
+
+            tipoBadge.textContent = tipoSelecionado === 'funcional' ? 'Funcional' : 'Não Funcional';  // Atualizar tipo
+
+            // Fechar o modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editarRequisitoModal'));
+            
+            modal.hide();
+            location.reload();
+        } else {
+            alert('Erro ao atualizar requisito.');
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Ocorreu um erro ao tentar salvar as alterações.');
+    });
+});
 </script>
 {% endblock %}

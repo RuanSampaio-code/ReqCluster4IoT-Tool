@@ -11,6 +11,7 @@ from pymongo import MongoClient
 from django.core.serializers.json import DjangoJSONEncoder
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.http import require_http_methods
 
 
 
@@ -43,32 +44,6 @@ def visualizacao_agrupamento(request, projeto_id):
 
 
 
-""" 
-@login_required
-def remover_requisito(request):
-    if request.method == "POST":
-        projeto_id = request.POST.get("projeto_id")
-        requisito_key = request.POST.get("requisito_key")
-
-        # Buscar o documento correto
-        requisito_doc = get_object_or_404(Requisito, projeto_id=projeto_id)
-
-        # Remover o requisito do JSON
-        if requisito_key in requisito_doc.requisitos:
-            del requisito_doc.requisitos[requisito_key]
-
-            # Atualizar o documento existente no MongoDB sem criar um novo
-            Requisito.objects.filter(id=requisito_doc.id).update(requisitos=requisito_doc.requisitos)
-
-            # Mensagem de sucesso
-            messages.success(request, f"O requisito {requisito_key} foi removido com sucesso!")
-
-        return redirect(f'/projetos/{projeto_id}/')
-
-    return JsonResponse({"error": "Método não permitido"}, status=405)
-
- """
-
 
 
 @login_required
@@ -77,37 +52,35 @@ def remover_requisito(request):
         projeto_id = request.POST.get("projeto_id")
         requisito_key = request.POST.get("requisito_key")
 
-        # Buscar o documento correto
+        # Buscar o documento correto com base no projeto_id
         requisito_doc = get_object_or_404(Requisito, projeto_id=projeto_id)
 
-        # Remover o requisito do campo "requisitos"
+        # Verificar se o requisito existe e remover da lista "requisitos"
         if requisito_key in requisito_doc.requisitos:
             del requisito_doc.requisitos[requisito_key]
 
-            # Remover o ID do requisito de todos os grupos em "grupos"
+            # Remover o requisito de todos os grupos em "grupos"
             if requisito_doc.grupos:
                 grupos_atualizados = requisito_doc.grupos.copy()
-                for grupo_nome, requisitos_ids in list(grupos_atualizados.items()):
+                for grupo_nome, requisitos_ids in grupos_atualizados.items():
                     if requisito_key in requisitos_ids:
-                        grupos_atualizados[grupo_nome].remove(requisito_key)
+                        requisitos_ids.remove(requisito_key)
                         # Opcional: Remover o grupo se ficar vazio
-                        if not grupos_atualizados[grupo_nome]:
+                        if not requisitos_ids:
                             del grupos_atualizados[grupo_nome]
 
                 # Atualizar os grupos no documento
                 requisito_doc.grupos = grupos_atualizados
 
-            # Atualizar o documento no MongoDB (ambos "requisitos" e "grupos")
-            Requisito.objects.filter(id=requisito_doc.id).update(
-                requisitos=requisito_doc.requisitos,
-                grupos=requisito_doc.grupos
-            )
+            # Salvar as alterações no banco de dados
+            requisito_doc.save()
 
             messages.success(request, f"Requisito {requisito_key} removido com sucesso!")
 
         return redirect(f'/projetos/{projeto_id}/')
 
     return JsonResponse({"error": "Método não permitido"}, status=405)
+
 
 
 
@@ -145,6 +118,7 @@ def adicionar_requisito(request):
             {"projeto_id": int(projeto_id)},
             {"$set": {f"requisitos.{novo_id}": {"texto": texto}}}
         )
+        messages.success(request, f"Requisito {novo_id} adicionado com sucesso!")
 
         return JsonResponse({"success": True, "novo_id": novo_id})
 
@@ -186,7 +160,7 @@ def atualizar_agrupamento(request, projeto_id):
 
 """ 
 
-
+@login_required
 def get_mindmap_data(request, projeto_id):
     client = MongoClient('mongodb://localhost:27017/')
     db = client['requisitos_db']
@@ -335,3 +309,52 @@ def save_mindmap_data(request, projeto_id):
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
+    
+
+
+@login_required    
+@require_http_methods(["GET", "POST"])
+def editar_requisito(request, projeto_id, requisito_id):
+    try:
+        # Busca exata por projeto_id
+        requisito_doc = Requisito.objects.get(projeto_id=projeto_id)
+
+        # Se for um POST, atualizar os dados
+        if request.method == 'POST':
+            novo_texto = request.POST.get('texto', '')
+            novo_tipo = request.POST.get('tipo', '')
+
+            # Atualiza o requisito
+            requisito_doc.requisitos.setdefault(requisito_id, {})['texto'] = novo_texto
+
+            # Atualiza listas de funcionais/não funcionais
+            if novo_tipo == 'funcional':
+                if requisito_id not in requisito_doc.funcionais:
+                    requisito_doc.funcionais.append(requisito_id)
+                if requisito_id in requisito_doc.nao_funcionais:
+                    requisito_doc.nao_funcionais.remove(requisito_id)
+            elif novo_tipo == 'nao_funcional':
+                if requisito_id not in requisito_doc.nao_funcionais:
+                    requisito_doc.nao_funcionais.append(requisito_id)
+                if requisito_id in requisito_doc.funcionais:
+                    requisito_doc.funcionais.remove(requisito_id)
+
+            # Atualiza o documento no MongoDB
+            requisito_doc.save()  # Djongo pode falhar com update_fields, então removemos
+
+            messages.success(request, f"Requisito {requisito_id} alterado com sucesso!")
+
+            return JsonResponse({'status': 'success'})
+
+        # Retorno para GET
+        return JsonResponse({
+            'texto': requisito_doc.requisitos.get(requisito_id, {}).get('texto', ''),
+            'tipo': 'funcional' if requisito_id in requisito_doc.funcionais else 
+                   'nao_funcional' if requisito_id in requisito_doc.nao_funcionais else ''
+        })
+
+    except Requisito.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Projeto não encontrado'}, status=404)
+
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
