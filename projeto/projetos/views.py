@@ -9,6 +9,30 @@ from requisitos.models import Requisito
 
 from django.core.files.storage import FileSystemStorage
 
+
+from pymongo import MongoClient
+
+def criar_requisito(projeto_id, requisitos, funcionais, nao_funcionais, grupos, caracteristica_grupo, status):
+    client = MongoClient('mongodb://localhost:27017/')
+    db = client['requisitos_db']
+    collection = db['requisitos']
+
+    documento = {
+        'projeto_id': projeto_id,
+        'requisitos': requisitos,
+        'funcionais': funcionais,
+        'nao_funcionais': nao_funcionais,
+        'grupos': grupos,
+        'caracteristica_grupo': caracteristica_grupo,
+        'status': status
+    }
+
+    try:
+        collection.insert_one(documento)
+        print("Requisito inserido com sucesso!")
+    except Exception as e:
+        print(f"Erro ao inserir requisito: {e}")
+
 @login_required
 def criar_projeto(request):
     if request.method == "POST":
@@ -44,16 +68,14 @@ def criar_projeto(request):
                         counter += 1
 
             # Cria/atualiza UM documento com todos os campos
-            Requisito.objects.using('mongodb').update_or_create(
+            criar_requisito(
                 projeto_id=projeto.id,
-                defaults={
-                    'requisitos': requisitos_data,
-                    'funcionais': [],  # Ou dados reais se necessário
-                    'nao_funcionais': [],
-                    'grupos': {},
-                    'caracteristica_grupo': {},
-                    #'status': {}
-                }
+                requisitos=requisitos_data,
+                funcionais=[],
+                nao_funcionais=[],
+                grupos={},
+                caracteristica_grupo={},
+                status=['Pendente de agrupamento']
             )
 
             messages.success(request, 'Projeto e requisitos criados!')
@@ -112,7 +134,7 @@ def detalhes_projeto(request, id):
     
     # Busca o DOCUMENTO de requisitos (não uma lista)
     requisito_doc = get_object_or_404(Requisito, projeto_id=projeto.id)
-
+    print(requisito_doc.grupos)
     return render(request, 'projetos/detalhes_projeto.html', {
         'projeto': projeto,
         'requisito_doc': requisito_doc  # Passa o documento completo

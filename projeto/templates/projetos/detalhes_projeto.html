@@ -68,8 +68,12 @@
                                 <i class="fas fa-tasks me-2"></i>Requisitos
                             </h5>
                             <div>
-                                <button type="button" class="btn btn-outline-secondary me-2">Classificação</button>
-                                <button type="button" class="btn btn-outline-secondary me-2">Agrupamento</button>
+                                <a href="{% url 'classificacao_requisitos' projeto.id %}">
+                                    <button type="button" class="btn btn-outline-secondary"> Classificação</button>
+                                </a>
+                                <a href="{% url 'agrupamento_requisitos' projeto.id %}">
+                                    <button type="button" class="btn btn-outline-secondary"> Agrupamento</button>
+                                </a>
                                 <a href="{% url 'visualizacao_agrupamento' projeto.id %}">
                                     <button type="button" class="btn btn-outline-secondary"> Visualização de agrupamento</button>
                                 </a>
