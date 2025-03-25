@@ -15,6 +15,9 @@ from django.views.decorators.http import require_http_methods
 from .agrupamento import agrupamento
 
 
+import os
+
+
 @login_required
 def visualizacao_agrupamento(request, projeto_id):
     # Supondo que você tem uma conexão com o MongoDB
@@ -76,7 +79,21 @@ def classificacao_requisitos(request, projeto_id):
     device = 0 if tf.config.list_physical_devices('GPU') else -1
 
     # Caminho do modelo
-    model_path = './modelo_classificacao'
+    #model_path = './modelo_classificacao'
+    #model_path = 'modelo_classificacao'
+
+    
+
+    # Obtém o diretório atual onde o script está sendo executado
+    diretorio_atual = os.getcwd()
+
+    # Nome da pasta que está na mesma raiz
+    nome_da_pasta = "requisitos\modelo_classificacao"
+
+    # Constrói o caminho completo adicionando o nome da pasta
+    model_path = os.path.join(diretorio_atual, nome_da_pasta)
+    print(model_path)
+
 
     # Verifique se o caminho existe
     if os.path.exists(model_path):
@@ -155,7 +172,7 @@ def agrupamento_requisitos(request, projeto_id):
     return redirect(f'/projetos/{projeto_id}/')
 
 
-
+""" 
 @login_required
 def remover_requisito(request):
     if request.method == "POST":
@@ -204,6 +221,54 @@ def remover_requisito(request):
 
     return JsonResponse({"error": "Método não permitido"}, status=405)
 
+ """
+@login_required
+def remover_requisito(request):
+    if request.method == "POST":
+        projeto_id = request.POST.get("projeto_id")
+        requisito_key = request.POST.get("requisito_key")
+
+        # Buscar o documento correto com base no projeto_id
+        requisito_doc = get_object_or_404(Requisito, projeto_id=projeto_id)
+
+        # Verificar se o requisito existe e remover da lista "requisitos"
+        if requisito_key in requisito_doc.requisitos:
+            del requisito_doc.requisitos[requisito_key]
+
+            # Remover o requisito de todos os grupos em "grupos"
+            grupos_atualizados = requisito_doc.grupos.copy() if requisito_doc.grupos else {}
+            
+            for grupo_nome, requisitos_ids in grupos_atualizados.items():
+                if requisito_key in requisitos_ids:
+                    requisitos_ids.remove(requisito_key)
+                    # Remover o grupo se ficar vazio
+                    if not requisitos_ids:
+                        del grupos_atualizados[grupo_nome]
+
+            # Inicializar as listas antes do uso para evitar UnboundLocalError
+            funcionais_atualizados = requisito_doc.funcionais.copy() if requisito_doc.funcionais else []
+            nao_funcionais_atualizados = requisito_doc.nao_funcionais.copy() if requisito_doc.nao_funcionais else []
+
+            # Remover o requisito das listas funcionais e não funcionais
+            if requisito_key in funcionais_atualizados:
+                funcionais_atualizados.remove(requisito_key)
+
+            if requisito_key in nao_funcionais_atualizados:
+                nao_funcionais_atualizados.remove(requisito_key)
+
+            # Atualizar os grupos e listas no documento
+            requisito_doc.grupos = grupos_atualizados
+            requisito_doc.funcionais = funcionais_atualizados
+            requisito_doc.nao_funcionais = nao_funcionais_atualizados
+
+            # Salvar as alterações no banco de dados
+            requisito_doc.save()
+
+            messages.success(request, f"Requisito {requisito_key} removido com sucesso!")
+
+        return redirect(f'/projetos/{projeto_id}/')
+
+    return JsonResponse({"error": "Método não permitido"}, status=405)
 
 
 
@@ -310,8 +375,6 @@ def get_mindmap_data(request, projeto_id):
         }
         for req_id in requisitos:
             req_texto = documento["requisitos"].get(req_id, {}).get("texto", "Sem texto")
-            print(req_id)
-            print(documento["requisitos"].get(req_id, {}))
             grupo_node["children"].append({
                 "id": f"requisito-{req_id}",
                 "topic": req_texto
@@ -412,7 +475,7 @@ def save_mindmap_data(request, projeto_id):
                     req_id = max(map(int, requisitos_originais.keys()))+1
                     req_id = str(req_id)
                     novos_funcionais.add(req_id)
-                    print("perereca")
+                   
                 # Atualizar/Criar requisito se necessário
                 if req_id not in novos_requisitos:
                     novos_requisitos[req_id] = {"texto": req_texto}
@@ -424,14 +487,13 @@ def save_mindmap_data(request, projeto_id):
 
             # Adicionar ao dicionário de grupos
             novos_grupos[grupo_nome] = requisitos_ids
-        print("Requisitos: ")
+       
         projeto_mongo["funcionais"].extend(novos_funcionais)
         funcionais = projeto_mongo["funcionais"]
-        #funcionais.extend(list(novos_funcionais))
-        print(funcionais)
-        print(novos_requisitos)
+       
+       
         # Atualizar o documento no MongoDB
-        
+
         collection.update_one(
             {"projeto_id": int(projeto_id)},
             {

@@ -5,7 +5,6 @@
 {% load tipo_tags %}
 {% load widget_tweaks %}
 
-
 {% block title %}Detalhes do Projeto - {{ projeto.nome }}{% endblock %}
 
 {% block content %}
@@ -18,11 +17,8 @@
                     <i class="fas fa-arrow-left me-2"></i>Voltar
                 </a>
                 <div class="btn-group">
-                    <a href="{% url 'editar_projeto' projeto.id %}" class="btn btn-outline-primary">
-                        <i class="fas fa-edit me-2"></i>Editar
-                    </a>
                     <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmarExclusao">
-                        <i class="fas fa-trash-alt me-2"></i>Excluir
+                        <i class="fas fa-trash-alt me-2"></i>Excluir Projeto
                     </button>
                 </div>
             </div>
@@ -338,22 +334,22 @@
 
 
     function abrirModalEdicao(projetoId, requisitoId, textoAtual) {
-    const form = document.getElementById('formEdicao');
-    form.action = `/home/projetos/requisito/editar/${projetoId}/${requisitoId}/`;
+        const form = document.getElementById('formEdicao');
+        form.action = `/home/projetos/requisito/editar/${projetoId}/${requisitoId}/`;
 
-    // Preencher dados atuais
-    document.getElementById('textoRequisito').value = textoAtual;
+        // Preencher dados atuais
+        document.getElementById('textoRequisito').value = textoAtual;
 
-    // Determinar tipo atual
-    const tipoBadge = document.querySelector(`tr:has(button[onclick*="${requisitoId}"]) .badge`);
-    const tipoAtual = tipoBadge.textContent.trim().toLowerCase().includes('funcional') ? 
-        (tipoBadge.textContent.includes('Não') ? 'nao_funcional' : 'funcional') : '';
+        // Determinar tipo atual
+        const tipoBadge = document.querySelector(`tr:has(button[onclick*="${requisitoId}"]) .badge`);
+        const tipoAtual = tipoBadge.textContent.trim().toLowerCase().includes('funcional') ? 
+            (tipoBadge.textContent.includes('Não') ? 'nao_funcional' : 'funcional') : '';
 
-    document.getElementById('selectTipo').value = tipoAtual;
+        document.getElementById('selectTipo').value = tipoAtual;
 
-    // Exibir modal
-    new bootstrap.Modal(document.getElementById('editarRequisitoModal')).show();
-}
+        // Exibir modal
+        new bootstrap.Modal(document.getElementById('editarRequisitoModal')).show();
+    }
 
 document.getElementById('formEdicao').addEventListener('submit', function(event) {
     event.preventDefault();  // Evitar o envio padrão do formulário

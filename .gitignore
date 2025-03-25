@@ -1,2 +1,13 @@
 *.h5
 *.bin
+
+#Modelo de IA
+projeto/requisitos/modelo_classificacao/
+projeto/requisitos/modelo_similaridade/
+
+#banco de dados
+projeto/db.sqlite3
+
+#Ambiente virtual
+venv/
+

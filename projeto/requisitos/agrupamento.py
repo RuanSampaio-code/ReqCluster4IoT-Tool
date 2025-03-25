@@ -6,6 +6,10 @@ from sklearn.metrics import silhouette_score
 import matplotlib.pyplot as plt
 from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
 import pandas as pd
+import os
+
+
+
 def calculate_dissimilarity_matrix(data, metric='euclidean'):
     """
     Calcula a matriz de dissimilaridade usando uma métrica especificada.
@@ -96,8 +100,22 @@ linkage_methods = [
 
 
 def agrupamento(requisitos,indices):
+
+     # Obtém o diretório atual onde o script está sendo executado
+    diretorio_atual = os.getcwd()
+
+    # Nome da pasta que está na mesma raiz
+    nome_da_pasta = "requisitos\modelo_similaridade"
+
+    # Constrói o caminho completo adicionando o nome da pasta
+    model_path = os.path.join(diretorio_atual, nome_da_pasta)
+    print(model_path)
+
+
+
+
     from sentence_transformers import SentenceTransformer
-    trained_model = SentenceTransformer("./modelo_similaridade")
+    trained_model = SentenceTransformer(model_path)
     data = trained_model.encode(requisitos)
     print(len(data))
     metricas = []
