@@ -82,9 +82,9 @@
   
           const result = await response.json();
           if (result.status === "success") {
-            alert("Alterações salvas com sucesso!");
+            console.log("Alterações salvas com sucesso!");
           } else {
-            alert("Erro ao salvar: " + result.error);
+            console.log("Erro ao salvar: " + result.error);
           }
         });
 

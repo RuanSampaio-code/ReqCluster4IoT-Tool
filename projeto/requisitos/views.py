@@ -14,9 +14,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.http import require_http_methods
 from .agrupamento import agrupamento
 
-
 import os
-
 
 @login_required
 def visualizacao_agrupamento(request, projeto_id):
@@ -123,7 +121,6 @@ def classificacao_requisitos(request, projeto_id):
         }
     )
 
-
     return redirect(f'/projetos/{projeto_id}/')
 
 @login_required
@@ -158,6 +155,18 @@ def agrupamento_requisitos(request, projeto_id):
         return resultado
     
     requisitos = extrair_textos(documento["requisitos"])
+
+    # Validação para agrupar apenas os requisitos que ja foram classificados
+    if not documento.get("funcionais"):
+        messages.error(request, "Não é possível realizar o agrupamento: Nenhum requisito foi classificado como funcional.")
+        return redirect(f'/projetos/{projeto_id}/')  # ou renderizar uma template específica
+    
+    # Validação: verificar se existem pelo menos 4 requisitos funcionais
+    if len(documento["funcionais"]) < 4:
+        messages.error(request, "Não é possível realizar o agrupamento: É necessário pelo menos 4 requisitos classificados.")
+        return redirect(f'/projetos/{projeto_id}/')
+
+
     requisitos_funcionais = [requisitos[i] for i in documento["funcionais"]]
 
     collection.update_one(

@@ -10,4 +10,4 @@ def determinar_tipo(key, requisito_doc):
         return "funcional"
     elif key_str in requisito_doc.nao_funcionais:
         return "não funcional"
-    return "não especificado"
+    return "não classificado"

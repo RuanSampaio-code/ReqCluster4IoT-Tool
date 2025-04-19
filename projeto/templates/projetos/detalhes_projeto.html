@@ -323,10 +323,10 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert("Requisito adicionado com sucesso!");
+                console.log("Requisito adicionado com sucesso!");
                 location.reload(); // Recarregar a página para exibir o novo requisito
             } else {
-                alert("Erro ao adicionar requisito!");
+                console.log("Erro ao adicionar requisito!");
             }
         })
         .catch(error => console.error("Erro:", error));

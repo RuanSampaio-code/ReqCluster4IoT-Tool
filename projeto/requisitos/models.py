@@ -23,22 +23,4 @@ class Requisito(models.Model):
     def __str__(self):
         return f"Requisitos (Projeto ID: {self.projeto_id})"
 
-""" class Requisito(models.Model):
-    TIPO_CHOICES = [
-        ("funcional", "Funcional"),
-        ("nao_funcional", "Não Funcional"),
-    ]
-
-
-    projeto_id = models.IntegerField(default=0)  # Adicione default=0
-    requisito = models.CharField(max_length=255)
-    arquivo = models.FileField(upload_to="requisitos/", blank=True, null=True)
-    tipo = models.CharField(max_length=20, choices=TIPO_CHOICES, blank=True, null=True)
-
-
-    class Meta:
-        db_table = 'requisitos'  # Nome da coleção no MongoDB
-
-    def __str__(self):
-        return f"{self.requisito} (Projeto ID: {self.projeto_id})"
-     """
+     
