@@ -1,4 +1,0 @@
-requisito 1
-requisito 2
-requisito 3
-requisito 4

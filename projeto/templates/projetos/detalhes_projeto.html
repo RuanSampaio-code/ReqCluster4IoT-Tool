@@ -109,17 +109,19 @@
                                                     <td>{{ key|encontrar_grupo:requisito_doc.grupos }}</td>
                                                     
                                                     <td>
-                                                        <!-- Botão de Editar -->
-                                                        <button type="button" class="btn btn-primary btn-sm me-2" 
-                                                            onclick="abrirModalEdicao('{{ requisito_doc.projeto_id }}', '{{ key }}', `{{ req.texto|escapejs }}`)">
-                                                            Alterar
-                                                        </button>
-
-                                                        <!-- Botão de Remover -->
-                                                        <button type="button" class="btn btn-danger btn-sm" 
-                                                            onclick="abrirModalConfirmacao('{{ requisito_doc.projeto_id }}', '{{ key }}')">
-                                                            Remover
-                                                        </button>                                       
+                                                        <div class="d-flex flex-column flex-sm-row gap-2">
+                                                            <!-- Botão de Editar -->
+                                                            <button type="button" class="btn btn-primary btn-sm" 
+                                                                onclick="abrirModalEdicao('{{ requisito_doc.projeto_id }}', '{{ key }}', `{{ req.texto|escapejs }}`)">
+                                                                <i class="bi bi-pencil"></i>
+                                                            </button>
+                                                    
+                                                            <!-- Botão de Remover -->
+                                                            <button type="button" class="btn btn-danger btn-sm" 
+                                                                onclick="abrirModalConfirmacao('{{ requisito_doc.projeto_id }}', '{{ key }}')">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                                 {% endfor %}
@@ -147,7 +149,7 @@
                     <div class="row text-muted small mt-4">
                         <div class="col-md-6">
                             <p class="mb-1">
-                                <i class="fas fa-user-circle me-2"></i>Criado por: {{ projeto.usuario.get_full_name }}
+                                <i class="fas fa-user-circle me-2"></i>Criado por: {{ projeto.usuario.username }}
                             </p>
                         </div>
                         <div class="col-md-6 text-md-end">
@@ -396,5 +398,16 @@ document.getElementById('formEdicao').addEventListener('submit', function(event)
         alert('Ocorreu um erro ao tentar salvar as alterações.');
     });
 });
+
+
+
+  // Detecta se o navegador voltou para essa página
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted || (window.performance && performance.navigation.type === 2)) {
+      // Recarrega a página forçadamente
+      window.location.reload();
+    }
+  });
+
 </script>
 {% endblock %}
