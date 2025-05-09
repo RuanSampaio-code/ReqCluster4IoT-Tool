@@ -5,69 +5,181 @@
 {% block title %}Sobre o ReqM4IoT{% endblock %}
 
 {% block content %}
-<div class="card shadow-lg p-4 align-items-center" style="max-width: 100%; margin-top: 50px;">
+<div class="card shadow-lg p-4" style="max-width: 100%; margin-top: 50px;">
     <div class="card-body">
-        <h1 class="text-center mb-4 display-4 text-dark" >Sobre o ReqM4IoT</h1>
+        <!-- Cabeçalho -->
+        <div class="text-center mb-5">
+            <img src="{% static 'img/iot-icon.png' %}" alt="Ícone IoT" class="mb-4" style="width: 80px;">
+            <h1 class="display-4 fw-bold text-dark">Sobre o ReqM4IoT</h1>
+            <p class="lead text-muted">Solução Inteligente para Gestão de Requisitos em IoT</p>
+        </div>
 
-        <div class="row g-4">
-            <!-- Seção ReqM4IoT -->
-            <div class="col-12">
-                <div class="bg-light p-3 rounded-3">
-                    <h2 class="mb-3 text-primary">O que é ReqM4IoT?</h2>
-                    <p >ReqM4IoT é uma ferramenta online desenvolvida para apoiar desenvolvedores (principalmente aqueles que estejam desenvolvendo sistemas Internet of Things - IoT) na realização das etapas de elicitação e análise de requisitos e modelagem de software.</p>
-                    <p>Desenvolvedores distribuídos geograficamente podem trabalhar juntos em um espaço de trabalho compartilhado, organizando os requisitos e os diagramas. Além de fornecer técnicas específicas para análise de requisitos para IoT (ReqMLSCity) e modelagem de software para IoT (SysIoTML), o sistema oferece várias funcionalidades que podem auxiliar e melhorar o processo de desenvolvimento de software.</p>
+        <!-- Conteúdo Principal -->
+        <div class="row g-5">
+            <!-- Introdução -->
+            <div class="col-lg-12 mb-4">
+                <div class="d-flex align-items-start">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-lightbulb fa-2x text-warning me-4"></i>
+                    </div>
+                    <div>
+                        <h3 class="fw-bold mb-3">Nossa Proposta</h3>
+                        <p class="text-muted">
+                            O Tool4IoTReq é uma ferramenta inovadora que implementa métodos avançados de agrupamento 
+                            para apoiar a análise de requisitos em aplicações de Internet das Coisas por meio de técnicas de Processamento de Linguagem Natural (PLN) e algoritmos de Aprendizado de Máquina.
+
+                        </p>
+                        <!-- <ul class="list-unstyled text-muted">
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Classificação automática de requisitos</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Agrupamento inteligente de especificações</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Gerenciamento de projetos com seus requisitos</li>
+                        </ul> -->
+                    </div>
                 </div>
             </div>
 
-            <!-- Seção SysIoTML -->
-            <div class="col-12">
-                <div class="bg-light p-3 rounded-3">
-                    <h2 class="mb-3 text-primary">O que é SysIoTML?</h2>
-                    <p>O SysIoTML é uma extensão do SysML (Systems Modeling Language), uma linguagem de propósito geral para modelagem de sistemas de aplicações de engenharia. O SysIoTML considera aspectos específicos de Sistemas IoT (comportamento e interatividade) através dos diagramas:</p>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item bg-light">Caso de Uso</li>
-                        <li class="list-group-item bg-light">Sequência</li>
-                        <li class="list-group-item bg-light">Máquina de Estado</li>
-                        <li class="list-group-item bg-light">Bloco</li>
-                    </ul>
-                    <p class="mt-3">Referência: <a href="https://www.scitepress.org/Link.aspx?doi=10.5220/0011988500003467" target="_blank" class="text-decoration-none">Nascimento et al. (2023)</a></p>
-                </div>
-            </div>
-
-            <!-- Seção ReqMLSCity -->
-            <div class="col-12">
-                <div class="bg-light p-3 rounded-3">
-                    <h2 class="mb-3 text-primary">O que é ReqMLSCity?</h2>
-                    <p>É uma ferramenta pioneira desenvolvida para avaliar requisitos quanto a:</p>
-                    <div class="row g-2 mb-3">
-                        <div class="col-md-4">
-                            <div class="p-2 bg-white rounded text-center">Ambiguidade</div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="p-2 bg-white rounded text-center">Análise Sintática</div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="p-2 bg-white rounded text-center">Análise de Contexto</div>
+            <!-- Funcionalidades -->
+            <div class="col-lg-12">
+                <div class="card border-0 h-100 shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0"><i class="fas fa-cogs me-2"></i>Funcionalidades Chave</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="d-flex mb-3">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-brain fa-lg text-purple me-3"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold">Classificação automática de requisitos</h5>
+                                        <p class="text-muted small">
+                                            Organização inteligente de requisitos usando técnicas avançadas.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="d-flex mb-3">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-layer-group fa-lg text-success me-3"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold">Agrupamento Inteligente</h5>
+                                        <p class="text-muted small">
+                                            Clusterização automática de especificações relacionadas.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <div class="col-md-6">
+                                <div class="d-flex mb-3">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-tasks fa-lg text-info me-3"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold">Gestão de Projetos</h5>
+                                        <p class="text-muted small">
+                                            Controle completo dos requisitos por projeto.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <div class="col-md-6">
+                                <div class="d-flex mb-3">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-project-diagram fa-lg text-warning me-3"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold">Visualização de agrupamento em Mapa Mental</h5>
+                                        <p class="text-muted small">
+                                            Veja agrupamentos de requisitos em forma de mapa mental interativo.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
-                    <p>Esta primeira versão foi apresentada e publicada no IV Concurso de Trabalhos de Iniciação Científica parte do Simpósio Brasileiro de Engenharia de Software - SBES 2023. <a href="https://sol.sbc.org.br/index.php/cbsoft_estendido/article/download/26073/25896/" target="_blank" class="text-decoration-none">Acessar publicação</a></p>
+                </div>
+            </div>
+            
+
+            <!-- Benefícios -->
+<div class="col-lg-12 mt-5">
+    <div class="bg-light p-4 rounded-3">
+        <h3 class="fw-bold mb-4 text-center">
+            <i class="fas fa-star me-2 text-warning"></i>Principais Benefícios
+        </h3>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="text-center p-3">
+                    <div class="icon-bg bg-purple mb-3">
+                        <i class="fas fa-cogs fa-2x text-white"></i>
+                    </div>
+                    <h5 class="fw-bold">Automatização</h5>
+                    <p class="text-muted small">Processo inteligente de categorização</p>
                 </div>
             </div>
 
-            <!-- Referências -->
-            <div class="col-12">
-                <div class="bg-light p-3 rounded-3">
-                    <h2 class="mb-3 text-primary">Referências</h2>
-                    <ol class="list-group list-group-numbered">
-                        <li class="list-group-item d-flex justify-content-between align-items-start bg-light">
-                            <div class="ms-2 me-auto">
-                                Nascimento, R.; Santos, V.; Carvalho, B.; Correia, J.; Rivero, L.; Santos, R.; Silva, F.; Teles, A. and Viana, D. (2023). SysIoTML: A Technique for Modeling Applications in the Context of IoT. In Proceedings of the 25th International Conference on Enterprise Information Systems - Volume 2: ICEIS.
-                            </div>
-                        </li>
-                    </ol>
+            <div class="col-md-4">
+                <div class="text-center p-3">
+                    <div class="icon-bg bg-blue mb-3">
+                        <i class="fas fa-bug fa-2x text-white"></i>
+                    </div>
+                    <h5 class="fw-bold">Interface Intuitiva</h5>
+                    <p class="text-muted small">Design moderno e fácil de usar</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="text-center p-3">
+                    <div class="icon-bg bg-danger mb-3">
+                        <i class="fas fa-user-shield fa-2x text-white"></i>
+                    </div>
+                    <h5 class="fw-bold">Evita Falhas Humanas</h5>
+                    <p class="text-muted small">Reduz erros manuais com processos automáticos</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
+        <!-- Chamada para Ação -->
+        <div class="text-center mt-5">
+            <a href="{% url 'registrar' %}" class="btn btn-primary btn-lg px-5">
+                <i class="fas fa-rocket me-2"></i>Comece Agora
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .icon-bg {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .bg-purple { background-color: #6f42c1; }
+    .bg-blue { background-color: #0d6efd; }
+    .bg-green { background-color: #198754; }
+    
+    .card-header {
+        border-radius: 12px 12px 0 0 !important;
+    }
+    
+    .list-unstyled li {
+        padding-left: 1.5rem;
+        text-indent: -1.5rem;
+    }
+</style>
 {% endblock %}
