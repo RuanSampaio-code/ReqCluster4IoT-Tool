@@ -1,9 +1,138 @@
 {% extends 'usuarios/base_home.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Dashboard | Home{% endblock %}
 
 {% block content %}
-<div class="p-4">
-    <h2 class="text-2xl font-bold">Bem-vindo à página inicial</h2>
+<div class="container py-5">
+    <!-- Cabeçalho -->
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold text-dark mb-3">Painel de Controle</h1>
+        <p class="lead text-muted">Acesse as principais funcionalidades do sistema</p>
+    </div>
+
+   
+    <!-- Introdução -->
+    <div class="card bg-light border-0 mb-5 shadow-sm">
+        <div class="card-body p-4">
+            <h3 class="fw-bold mb-3">Bem-vindo à Plataforma Tool4IoTReq</h3>
+            <p class="text-muted mb-0">
+                Ferramenta especializada na organização e análise de requisitos para aplicações IoT. 
+                Desenvolvida para simplificar a gestão de especificações técnicas, permitindo:
+            </p>
+            <hr class="my-4">
+            <div class="row text-muted">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-search me-3 text-primary"></i>
+                        <span>Administração de projetos</span>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-project-diagram me-3 text-success"></i>
+                        <span>Classificação de requisitos</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-users me-3 text-info"></i>
+                        <span>Agrupamento de Requisitos</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Título da seção de ações -->
+    <h3 class="fw-bold text-dark mb-4">Atalhos de Ações:</h3>
+
+    <!-- Cards de Ações -->
+    <div class="row g-4">
+        
+        <div class="col-md-4">
+            <div class="card border-light shadow-sm h-100 hover-effect">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-folder-open fa-2x text-primary me-3"></i>
+                        <h5 class="card-title mb-0 fw-bold">Gerenciar Projetos</h5>
+                    </div>
+                    <p class="card-text text-muted mb-4">Crie, edite e acompanhe todos os projetos do sistema.</p>
+                    <a href="{% url 'gerencia_projetos' %}" class="btn btn-link text-decoration-none p-0 d-flex align-items-center justify-content-end">
+                        <span class="me-2">Acessar</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {% if user.is_authenticated and user.tipo_usuario == 'admin' %}
+        <div class="col-md-4">
+            <div class="card border-light shadow-sm h-100 hover-effect">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-users-cog fa-2x text-success me-3"></i>
+                        <h5 class="card-title mb-0 fw-bold">Gerenciar Usuários</h5>
+                    </div>
+                    <p class="card-text text-muted mb-4">Administre permissões e cadastros de colaboradores.</p>
+                    <a href="{% url 'gerencia_usuarios' %}" class="btn btn-link text-decoration-none p-0 d-flex align-items-center justify-content-end">
+                        <span class="me-2">Acessar</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="col-md-4">
+            <div class="card border-light shadow-sm h-100 hover-effect">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-user-edit fa-2x text-info me-3"></i>
+                        <h5 class="card-title mb-0 fw-bold">Meu Perfil</h5>
+                    </div>
+                    <p class="card-text text-muted mb-4">Atualize suas informações pessoais e preferências.</p>
+                    <a href="{% url 'editar_perfil' %}" class="btn btn-link text-decoration-none p-0 d-flex align-items-center justify-content-end">
+                        <span class="me-2">Acessar</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+    .hover-effect {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border-radius: 8px;
+    }
+    
+    .hover-effect:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+    
+    .card-title {
+        color: #2c3e50;
+        font-size: 1.25rem;
+    }
+    
+    .btn-link {
+        color: #3498db !important;
+        transition: color 0.2s ease;
+    }
+    
+    .btn-link:hover {
+        color: #2980b9 !important;
+    }
+    
+    .fa-arrow-right {
+        font-size: 0.9rem;
+    }
+
+    .fa-2x {
+        width: 40px;
+        text-align: center;
+    }
+</style>
 {% endblock %}

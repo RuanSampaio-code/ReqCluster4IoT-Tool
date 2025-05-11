@@ -1,0 +1,246 @@
+[33mcommit fad36b589ba773158dc10b9aaf0b863edd507930[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32melementos_de_ia[m[33m)[m
+Author: Bruno Carvalho da Silva <bruno.carvalho1@discente.ufma.br>
+Date:   Sun Mar 23 20:53:48 2025 -0300
+
+    adicionando elementos de ia na aplicação
+
+[33mcommit a3346c2d05d9cfdcec7d0f2f245f43953fc7e37c[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Wed Mar 19 01:01:13 2025 -0300
+
+    funcionalidade de alterar requisito
+
+[33mcommit 765751ee10c5d95151f0a7e65235bbd6e3b9c778[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Tue Mar 18 00:16:43 2025 -0300
+
+    trazendo info de tipo do mongo db
+
+[33mcommit aad873e35df9803f45903e50f23dd82c45ac3a5f[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Sun Mar 16 22:05:29 2025 -0300
+
+    exclusao de requisitos em grupos
+
+[33mcommit 361248a1618a3b52e5ea82b886aa55738cf7f6cf[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Sun Mar 16 11:15:12 2025 -0300
+
+    mind-elixi aplicado
+
+[33mcommit f404f1d74bc8fbf57f2becfc9cfc6a249818e2b0[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Sat Mar 15 23:51:49 2025 -0300
+
+    interação com mongo e mind elixir inicial
+
+[33mcommit 5da068cb42f6b3300ac42b831571e87b3ba36a86[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Sat Mar 15 17:45:46 2025 -0300
+
+    adicionando novos botoes a tela de requisitos
+
+[33mcommit cfcdd4ce993e648b9123268f9ff92fec8eeeed4d[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Sat Mar 15 17:35:11 2025 -0300
+
+    adicionando requisito individual
+
+[33mcommit a6a290f01ca2de9af40541f9d7c672146d6a6508[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Sat Mar 15 17:14:45 2025 -0300
+
+    modificações em confirmação de exclusão de requisito
+
+[33mcommit 6b0ed88d1b4463b03ed0d1029491eea2c352a898[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Sat Mar 15 02:08:18 2025 -0300
+
+    exclusão requisito individual
+
+[33mcommit 2cd28483cd933ce2e363be4ff4b83bcc1bc3758c[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Thu Mar 13 22:06:26 2025 -0300
+
+    campo status de projeto sempre pendent4e ao criar
+
+[33mcommit 46dbb996ed5411fd5a4930e407f259bcb80e8c61[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Mon Mar 10 23:27:47 2025 -0300
+
+    nova nav bar e pagina sobre
+
+[33mcommit c35097ad341ce3ef64b11c4c6f63aac58db930ba[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Thu Mar 6 23:38:42 2025 -0300
+
+    refatorando front-ed
+
+[33mcommit abcfc1315bddce47d5be6a5a1454622a4007937b[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Mon Mar 3 00:53:21 2025 -0300
+
+    alterando modelo de persistencia de dados no mongo db
+
+[33mcommit 83f6fe4dd041b657415d03cf509f957082878a54[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Fri Feb 28 21:45:21 2025 -0300
+
+    primeiros insert no mongo db
+
+[33mcommit 69d77f1c1927b6ff8b3b9402cb8cdf593d88ade5[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Sun Feb 23 01:02:44 2025 -0300
+
+    alterações para usar banco db
+
+[33mcommit f7947236e43fe284e06e89c2a7ac8cf67bcaaaf8[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Sat Feb 22 18:41:17 2025 -0300
+
+    alterações para usar banco db
+
+[33mcommit 00ae3df196a5ebed93ec83e6c657a726bdf48c5d[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Thu Feb 20 01:26:38 2025 -0300
+
+    nova tabela de requisitos modelo relacional
+
+[33mcommit b466d652541815116e009bad13efa861b0005429[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Tue Feb 18 18:23:02 2025 -0300
+
+    detalhes projeto
+
+[33mcommit f16a98d58602f68c967da940817740fa8a7e8159[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Sun Feb 9 20:32:09 2025 -0300
+
+    gerenciamento de usuario concluído
+
+[33mcommit bcca59523a38d8e18e532425b2fd0c1184c2e4f3[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Wed Feb 5 23:18:44 2025 -0300
+
+    criação ode projeto
+
+[33mcommit 7077106719b342a8a2b8a6cea57397b820ef16b3[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Sun Feb 2 22:23:16 2025 -0300
+
+    pagina de editar usuario pronta
+
+[33mcommit cd0293132c8d9760360a02e456a2fba11aba3a06[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Sat Feb 1 12:57:07 2025 -0300
+
+    pagina de gerneciaer proejtos
+
+[33mcommit 6d516f80f37e495e179ef3d0f5f80dfcb98c0ced[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Thu Jan 30 01:02:21 2025 -0300
+
+    gerenciamento de usuario admin
+
+[33mcommit 06de7ba64d463008057a28222687d1324891ab85[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Wed Jan 29 22:33:57 2025 -0300
+
+    organizando pagina de templastes e ajsutes no css
+
+[33mcommit 0a1e9ff8c898bae1b1c29c54bffe4df37e09acd4[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Tue Jan 28 20:59:27 2025 -0300
+
+    melhorias frontend
+
+[33mcommit 1eb435441869a6adb4e4f4850b3ea59bbf72a720[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Sun Jan 26 21:51:43 2025 -0300
+
+    refatoriação pra classe CustomUser e aplicação de boostrap
+
+[33mcommit 8957a590bb2bfc1831771ac8c8bb32c7b0735c11[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Wed Jan 22 11:00:10 2025 -0300
+
+    link de home para cadas
+    tro
+
+[33mcommit 53ea1bc68335de0fdc41e8a9106ef6b70ee6de38[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Tue Jan 21 17:46:29 2025 -0300
+
+    impletação de login cadastrado e templates django
+
+[33mcommit 5252f5a8fbda0aebf9fe4eda0ec7d0644db95f28[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Sun Jan 19 23:32:42 2025 -0300
+
+    funcionalidade de cadatro de usuario implementada
+
+[33mcommit e9b0ef1fdd359ac058a318d3a9fb25ed3989b81b[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Sun Jan 19 20:33:44 2025 -0300
+
+    correções no css
+
+[33mcommit 3467d44a0009d7ea109b685c0e29cfc379842897[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Sun Jan 19 13:14:16 2025 -0300
+
+    estilizando pagina cadastro de users
+
+[33mcommit 9a1220c566b8b510754fc9b2ba5e9c09ecad5f3f[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Sun Jan 19 00:13:29 2025 -0300
+
+    estilizando pagina cadastro de users
+
+[33mcommit d1a22baaee9457c172212699b65cfbe5054ae460[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Sat Jan 18 15:52:39 2025 -0300
+
+    organizando users
+
+[33mcommit 47f0dcf2fd5d66bb6ea779d036376e37d7f2e0f5[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Sat Jan 18 12:26:25 2025 -0300
+
+    usando usuario padrao do django
+
+[33mcommit 1b1bd8db0d089741a5356650f81ed193d955f854[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Fri Jan 17 10:41:48 2025 -0300
+
+    outra configurações
+
+[33mcommit 8eb9a92d92e79407539df5c023d99a4e86b155af[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Thu Jan 16 22:27:46 2025 -0300
+
+    pagian rotas de teplates
+
+[33mcommit 327fc1aadc21dca1e1e7e862867aa2f560546440[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Thu Jan 16 02:38:54 2025 -0300
+
+    pagian de login
+
+[33mcommit 5a2951909c49e6098646e5a69e34fe2098fbe912[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Wed Jan 15 23:42:36 2025 -0300
+
+    tcc parte frontend - inicio
+
+[33mcommit 09ae17ae7a87ada1fc0626735936d9845aee028f[m
+Author: RuanSampaio-code <ruansampaio001@gmail.com>
+Date:   Wed Jan 15 01:59:34 2025 -0300
+
+    tcc parte inicial
+
+[33mcommit e308e6a85b29705677c85cd12fa0c634c096fa11[m
+Author: JRuan Sampaio <77208494+RuanSampaio-code@users.noreply.github.com>
+Date:   Thu Jan 9 17:27:15 2025 -0300
+
+    Initial commit
