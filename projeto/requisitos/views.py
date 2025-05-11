@@ -181,56 +181,6 @@ def agrupamento_requisitos(request, projeto_id):
     return redirect(f'/projetos/{projeto_id}/')
 
 
-""" 
-@login_required
-def remover_requisito(request):
-    if request.method == "POST":
-        projeto_id = request.POST.get("projeto_id")
-        requisito_key = request.POST.get("requisito_key")
-
-        # Buscar o documento correto com base no projeto_id
-        requisito_doc = get_object_or_404(Requisito, projeto_id=projeto_id)
-        # Verificar se o requisito existe e remover da lista "requisitos"
-        if requisito_key in requisito_doc.requisitos:
-            del requisito_doc.requisitos[requisito_key]
-
-            # Remover o requisito de todos os grupos em "grupos"
-            grupos_atualizados = requisito_doc.grupos.copy()
-            if requisito_doc.grupos:
-                
-                for grupo_nome, requisitos_ids in grupos_atualizados.items():
-                    if requisito_key in requisitos_ids:
-                        requisitos_ids.remove(requisito_key)
-                        # Opcional: Remover o grupo se ficar vazio
-                        if not requisitos_ids:
-                            del grupos_atualizados[grupo_nome]
-            if requisito_doc.funcionais:
-                funcionais_atualizados = requisito_doc.funcionais.copy()
-                if requisito_key in requisito_doc.funcionais:
-                    funcionais_atualizados.pop(funcionais_atualizados.index(requisito_key))
-
-            nao_funcionais_atualizados = requisito_doc.nao_funcionais.copy()
-            if requisito_doc.nao_funcionais:
-                
-                if requisito_key in requisito_doc.nao_funcionais:
-                    nao_funcionais_atualizados.pop(nao_funcionais_atualizados.index(requisito_key))
-
-            # Atualizar os grupos no documento
-            requisito_doc.grupos = grupos_atualizados
-            requisito_doc.funcionais = funcionais_atualizados
-            requisito_doc.nao_funcionais = nao_funcionais_atualizados
-
-            # Salvar as alterações no banco de dados
-            print(requisito_doc.funcionais)
-            requisito_doc.save()
-
-            messages.success(request, f"Requisito {requisito_key} removido com sucesso!")
-
-        return redirect(f'/projetos/{projeto_id}/')
-
-    return JsonResponse({"error": "Método não permitido"}, status=405)
-
- """
 @login_required
 def remover_requisito(request):
     if request.method == "POST":
@@ -351,12 +301,6 @@ def atualizar_agrupamento(request, projeto_id):
 
 
 
-
-
-""" 
-
-""" 
-
 @login_required
 def get_mindmap_data(request, projeto_id):
     client = MongoClient('mongodb://localhost:27017/')
@@ -393,59 +337,6 @@ def get_mindmap_data(request, projeto_id):
 
     return JsonResponse(mind_data) 
 
-
-""" 
-@csrf_exempt
-def save_mindmap_data(request, projeto_id):
-    if request.method != 'POST':
-        return JsonResponse({'error': 'Método não permitido'}, status=405)
-
-    try:
-        client = MongoClient('mongodb://localhost:27017/')
-        db = client['requisitos_db']
-        collection = db['requisitos']
-
-        # Buscar documento do projeto no MongoDB
-        projeto_mongo = collection.find_one({"projeto_id": int(projeto_id)})
-        if not projeto_mongo:
-            return JsonResponse({'error': 'Projeto não encontrado'}, status=404)
-
-        raw_data = json.loads(request.body)
-
-        # Inicializar requisitos e grupos se não existirem
-        if "requisitos" not in projeto_mongo:
-            projeto_mongo["requisitos"] = {}
-        if "grupos" not in projeto_mongo:
-            projeto_mongo["grupos"] = {}
-
-        novos_grupos = {}
-        novos_requisitos = projeto_mongo.get("requisitos", {})
-
-        for grupo in raw_data.get("nodeData", {}).get("children", []):
-            grupo_id = grupo["id"]
-            novos_grupos[grupo_id] = []
-
-            for req in grupo.get("children", []):
-                req_id = req["id"].replace("requisito-", "")
-                req_texto = req["topic"]
-
-                # Se for um novo requisito, adicionar ao dicionário de requisitos
-                if req_id not in novos_requisitos:
-                    novos_requisitos[req_id] = {"texto": req_texto}
-
-                novos_grupos[grupo_id].append(req_id)
-
-        # Atualizando os dados no MongoDB
-        collection.update_one(
-            {"projeto_id": int(projeto_id)},
-            {"$set": {"grupos": novos_grupos, "requisitos": novos_requisitos}}
-        )
-
-        return JsonResponse({'status': 'success'})
-
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=400)
- """
 
 @csrf_exempt
 def save_mindmap_data(request, projeto_id):

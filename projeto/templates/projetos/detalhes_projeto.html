@@ -64,16 +64,17 @@
                                 <i class="fas fa-tasks me-2"></i>Requisitos
                             </h5>
                             <div>
-                                <a href="{% url 'classificacao_requisitos' projeto.id %}">
-                                    <button type="button" class="btn btn-outline-secondary"> Classificação</button>
-                                </a>
-                                <a href="{% url 'agrupamento_requisitos' projeto.id %}">
-                                    <button type="button" class="btn btn-outline-secondary"> Agrupamento</button>
-                                </a>
+                                <button type="button" class="btn btn-outline-secondary" onclick="iniciarClassificacao()">
+                                    Classificação
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary" onclick="iniciarAgrupamento()">
+                                    Agrupamento
+                                </button>
                                 <a href="{% url 'visualizacao_agrupamento' projeto.id %}">
-                                    <button type="button" class="btn btn-outline-secondary"> Visualização de agrupamento</button>
+                                    <button type="button" class="btn btn-outline-secondary">
+                                        Visualização de agrupamento
+                                    </button>
                                 </a>
-                                
                             </div>
                         </div>
                     
@@ -160,6 +161,21 @@
     </div>
 </div>
 
+<!-- Modal para carregamento de classificação e agrupamento -->
+<div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Carregando...</span>
+                </div>
+                <h5 class="mt-3">Processando requisitos...</h5>
+                <p>Isso pode levar alguns instantes</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal de Confirmação de Exclusão de projeto -->
 <div class="modal fade" id="confirmarExclusao" tabindex="-1" aria-labelledby="confirmarExclusaoLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -206,7 +222,6 @@
     </div>
 </div>
 
-
 <!-- Modal para Adicionar Requisito -->
 <div class="modal fade" id="adicionarRequisitoModal" tabindex="-1" aria-labelledby="adicionarRequisitoLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -233,10 +248,7 @@
     </div>
 </div>
 
-
-
-
-<!-- Modal de Edição -->
+<!-- Modal de Edição de requisito -->
 <div class="modal fade" id="editarRequisitoModal" tabindex="-1" aria-labelledby="editarRequisitoModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -271,6 +283,48 @@
 <script>
     
     let projetoId, requisitoKey;
+
+    /* Carregamento de agrupamemento de classficação */
+    function showLoadingModal() {
+        const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+        loadingModal.show();
+        return loadingModal;
+    }
+
+    async function iniciarClassificacao() {
+        const loadingModal = showLoadingModal();
+        try {
+            const response = await fetch("{% url 'classificacao_requisitos' projeto.id %}");
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Erro na classificação');
+            }
+        } catch (error) {
+            alert('Erro na requisição: ' + error.message);
+        } finally {
+            loadingModal.hide();
+        }
+    }
+
+    async function iniciarAgrupamento() {
+        const loadingModal = showLoadingModal();
+        try {
+            const response = await fetch("{% url 'agrupamento_requisitos' projeto.id %}");
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                const errorData = await response.json();
+                alert(errorData.message || 'Erro no agrupamento');
+            }
+        } catch (error) {
+            alert('Erro na requisição: ' + error.message);
+        } finally {
+            loadingModal.hide();
+        }
+    }
+
+    /* ----------------------------------------------------------------------------------------------------------------------------------------- */
 
     function abrirModalConfirmacao(projId, reqKey) {
         projetoId = projId;
@@ -406,4 +460,18 @@ document.getElementById('formEdicao').addEventListener('submit', function(event)
   });
 
 </script>
+
+<style>
+    
+    #loadingModal .modal-content {
+        background-color: rgba(255, 255, 255, 0.95);
+    }
+
+    #loadingModal .spinner-border {
+        width: 3rem;
+        height: 3rem;
+        border-width: 0.25em;
+    }
+
+</style>
 {% endblock %}
