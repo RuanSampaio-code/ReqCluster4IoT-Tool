@@ -8,6 +8,7 @@ from .views import save_mindmap_data
 from .views import editar_requisito
 from .views import classificacao_requisitos
 from .views import agrupamento_requisitos
+from .views import processar_agrupamento
 
 urlpatterns = [
     path('home/projetos/requisito/remover-requisito/', remover_requisito, name='remover_requisito'),
@@ -21,5 +22,7 @@ urlpatterns = [
     path('home/projetos/requisito/editar/<int:projeto_id>/<str:requisito_id>/', 
          editar_requisito, 
          name='editar_requisito'),
+    path('processar-agrupamento/<int:projeto_id>/', processar_agrupamento, name='processar_agrupamento'),
+         
    
 ]
