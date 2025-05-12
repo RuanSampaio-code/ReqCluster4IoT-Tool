@@ -12,6 +12,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.http import require_http_methods
+from django.urls import reverse
 from .agrupamento import agrupamento
 
 import os
@@ -80,7 +81,6 @@ def classificacao_requisitos(request, projeto_id):
     #model_path = './modelo_classificacao'
     #model_path = 'modelo_classificacao'
 
-    
 
     # Obtém o diretório atual onde o script está sendo executado
     diretorio_atual = os.getcwd()
@@ -123,7 +123,7 @@ def classificacao_requisitos(request, projeto_id):
 
     return redirect(f'/projetos/{projeto_id}/')
 
-@login_required
+""" @login_required
 def agrupamento_requisitos(request, projeto_id):
     def extrair_textos(dicionario):
         resultado = {}
@@ -178,8 +178,63 @@ def agrupamento_requisitos(request, projeto_id):
         }
     )
 
-    return redirect(f'/projetos/{projeto_id}/')
+    return redirect(f'/projetos/{projeto_id}/') """
 
+def agrupamento_requisitos(request, projeto_id):
+    client = MongoClient('mongodb://localhost:27017/')
+    db = client['requisitos_db']
+    collection = db['requisitos']
+    
+    documento = collection.find_one({"projeto_id": int(projeto_id)})
+    
+    if not documento:
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'error': 'Projeto não encontrado'}, status=404)
+        messages.error(request, "Projeto não encontrado")
+        return redirect('pagina_principal')
+
+    # Validações
+    if not documento.get("funcionais"):
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'error': "Nenhum requisito classificado como funcional"}, status=400)
+        messages.error(request, "Não é possível realizar o agrupamento...")
+        return redirect(f'/projetos/{projeto_id}/')
+
+    if len(documento["funcionais"]) < 4:
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'error': "Necessário pelo menos 4 requisitos"}, status=400)
+        messages.error(request, "Não é possível realizar o agrupamento...")
+        return redirect(f'/projetos/{projeto_id}/')
+
+    return JsonResponse({'validation_passed': True})
+    
+
+def processar_agrupamento(request, projeto_id):
+    try:
+        client = MongoClient('mongodb://localhost:27017/')
+        db = client['requisitos_db']
+        collection = db['requisitos']
+        
+        documento = collection.find_one({"projeto_id": int(projeto_id)})
+        
+        def extrair_textos(dicionario):
+            return {k: v.get('texto', '') for k, v in dicionario.items()}
+            
+        requisitos = extrair_textos(documento["requisitos"])
+        requisitos_funcionais = [requisitos[i] for i in documento["funcionais"]]
+        
+        # Sua função de agrupamento
+        grupos = agrupamento(requisitos_funcionais, documento["funcionais"])
+        
+        collection.update_one(
+            {"projeto_id": int(projeto_id)},
+            {"$set": {"grupos": grupos}}
+        )
+        
+        return JsonResponse({'success': True})
+    
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 @login_required
 def remover_requisito(request):
