@@ -1,6 +1,7 @@
 *.h5
 *.bin
 
+
 #Modelo de IA
 projeto/requisitos/modelo_classificacao/
 projeto/requisitos/modelo_similaridade/
@@ -11,3 +12,6 @@ projeto/db.sqlite3
 #Ambiente virtual
 venv/
 
+# Ignorar arquivos compilados do Python
+__pycache__/
+*.py[cod]
