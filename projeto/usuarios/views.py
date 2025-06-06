@@ -33,6 +33,9 @@ def login_view(request):
 def about(request):
     return render(request, 'usuarios/about.html')  # Nome do template em inglês
 
+def contatos(request):
+    return render(request, 'usuarios/contacts.html')  # Nome do template em inglês
+
 # Registrar novo Usuário 
 def registrar_usuario(request):
     if request.method == 'POST':
