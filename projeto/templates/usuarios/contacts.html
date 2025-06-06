@@ -1,0 +1,166 @@
+{% extends 'usuarios/base_login.html' %}
+{% load static %}
+
+{% block title %}Contatos - Tool4IoTReq{% endblock %}
+
+{% block content %}
+<div class="container py-5 m-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Cabeçalho -->
+            <div class="text-center mb-5">
+                <h3 class="display-4 fw-bold text-dark">Entre em Contato</h3>
+                <p class="lead text-muted">Estamos à disposição para ajudar com suas dúvidas sobre o Tool4IoTReq</p>
+            </div>
+
+            <!-- Card de Informações de Contato -->
+            <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+                <div class="card-header bg-primary text-white py-4">
+                    <h2 class="h1 mb-0 text-center">
+                        <i class="fas fa-envelope-open-text me-2"></i>
+                        Informações de Contato
+                    </h2>
+                </div>
+                
+                <div class="card-body p-4 p-lg-5">
+                    <div class="row g-4">
+                        <!-- Email -->
+                        <div class="col-md-6">
+                            <div class="d-flex p-3 bg-light rounded-3 h-100">
+                                <div class="flex-shrink-0">
+                                    <div class="icon-circle bg-primary text-white">
+                                        <i class="fas fa-envelope fa-lg"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-4">
+                                    <h3 class="h5 fw-bold mb-2">Email</h3>
+                                    <p class="mb-0 text-muted">jruansampaiodev@gmail.com</p>
+                                    <small class="text-muted">Resposta em até 24h</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Telefone -->
+                        <div class="col-md-6">
+                            <div class="d-flex p-3 bg-light rounded-3 h-100">
+                                <div class="flex-shrink-0">
+                                    <div class="icon-circle bg-success text-white">
+                                        <i class="fas fa-phone-alt fa-lg"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-4">
+                                    <h3 class="h5 fw-bold mb-2">Telefone</h3>
+                                    <p class="mb-0 text-muted">+55 (11) 99999-9999</p>
+                                    <small class="text-muted">Atendimento preferencial</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Endereço -->
+                        <div class="col-md-6">
+                            <div class="d-flex p-3 bg-light rounded-3 h-100">
+                                <div class="flex-shrink-0">
+                                    <div class="icon-circle bg-danger text-white">
+                                        <i class="fas fa-map-marker-alt fa-lg"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-4">
+                                    <h3 class="h5 fw-bold mb-2">Endereço</h3>
+                                    <p class="mb-0 text-muted">Av. Contorno da UFMA, 100 - Sá Viana</p>
+                                    <p class="mb-0 text-muted">São Luís - MA</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Horário -->
+                        <div class="col-md-6">
+                            <div class="d-flex p-3 bg-light rounded-3 h-100">
+                                <div class="flex-shrink-0">
+                                    <div class="icon-circle bg-warning text-white">
+                                        <i class="fas fa-clock fa-lg"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-4">
+                                    <h3 class="h5 fw-bold mb-2">Horário de Atendimento</h3>
+                                    <p class="mb-0 text-muted">Segunda a Sexta</p>
+                                    <p class="mb-0 text-muted">9:00 - 18:00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mapa de localização -->
+                    <div class="mt-5">
+                        <div class="map-container rounded-3 overflow-hidden shadow-sm">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3985.838593978506!2d-44.3105573242686!3d-2.5593152383442233!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7f68f5c5c9fe2b9%3A0xf331be9bce9437eb!2sLaborat%C3%B3rio%20de%20Sistemas%20Distribu%C3%ADdos%20Inteligentes%20(LSDi)!5e0!3m2!1spt-BR!2sbr!4v1749218164470!5m2!1spt-BR!2sbr"
+                                width="100%" 
+                                height="300" 
+                                style="border:0;" 
+                                allowfullscreen="" 
+                                loading="lazy"
+                                class="rounded-3"
+                            ></iframe>
+
+                            <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3985.838593978506!2d-44.3105573242686!3d-2.5593152383442233!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7f68f5c5c9fe2b9%3A0xf331be9bce9437eb!2sLaborat%C3%B3rio%20de%20Sistemas%20Distribu%C3%ADdos%20Inteligentes%20(LSDi)!5e0!3m2!1spt-BR!2sbr!4v1749218164470!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" class="rounded-3"></iframe> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <footer class="text-center mt-5 mb-4 text-muted" style="font-size: 0.9rem;">
+                &copy; <a target="_blank" href="https://www.lsdi.ufma.br/" class="text-decoration-none">LSDi - Laboratório de Sistemas Distribuídos Inteligentes/UFMA</a>
+            </footer>
+        </div>
+    </div>
+</div>
+
+<style>
+    .icon-circle {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #0d6efd;
+    }
+    
+    .card-header {
+        background: linear-gradient(135deg, #0d6efd, #6610f2);
+    }
+    
+    .bg-light {
+        background-color: #f8f9fa!important;
+       /*  transition: transform 0.3s, box-shadow 0.3s; */
+    }
+    
+    .bg-light:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .map-container {
+        border: 1px solid #e9ecef;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.05);
+    }
+    
+    footer a {
+        color: #6c757d;
+        transition: color 0.3s;
+        font-weight: 500;
+    }
+    
+    footer a:hover {
+        color: #0d6efd;
+        text-decoration: none;
+    }
+    
+    .rounded-3 {
+        border-radius: 1rem!important;
+    }
+</style>
+{% endblock %}
