@@ -1,4 +1,5 @@
 # requisitos/models.py
+'''
 from djongo import models  # Mude de django.db para djongo
 from django.conf import settings
 from bson import ObjectId
@@ -22,5 +23,5 @@ class Requisito(models.Model):
 
     def __str__(self):
         return f"Requisitos (Projeto ID: {self.projeto_id})"
-
+'''
      

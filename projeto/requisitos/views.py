@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib import messages
-from .models import Requisito
+#from .models import Requisito
 from projetos.models import Projeto
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
@@ -21,7 +21,7 @@ import os
 def visualizacao_agrupamento(request, projeto_id):
     # Supondo que você tem uma conexão com o MongoDB
     from pymongo import MongoClient
-    client = MongoClient('mongodb://localhost:27017/')
+    client = MongoClient('mongodb://mongodb:27017/')
     db = client['requisitos_db']
     collection = db['requisitos']
 
@@ -50,7 +50,7 @@ def classificacao_requisitos(request, projeto_id):
     # Supondo que você tem uma conexão com o MongoDB
     from pymongo import MongoClient
     import os
-    client = MongoClient('mongodb://localhost:27017/')
+    client = MongoClient('mongodb://mongodb:27017/')
     db = client['requisitos_db']
     collection = db['requisitos']
 
@@ -86,7 +86,7 @@ def classificacao_requisitos(request, projeto_id):
     diretorio_atual = os.getcwd()
 
     # Nome da pasta que está na mesma raiz
-    nome_da_pasta = "requisitos\modelo_classificacao"
+    nome_da_pasta = "/projeto/requisitos/modelo_classificacao"
 
     # Constrói o caminho completo adicionando o nome da pasta
     model_path = os.path.join(diretorio_atual, nome_da_pasta)
@@ -181,7 +181,7 @@ def agrupamento_requisitos(request, projeto_id):
     return redirect(f'/projetos/{projeto_id}/') """
 
 def agrupamento_requisitos(request, projeto_id):
-    client = MongoClient('mongodb://localhost:27017/')
+    client = MongoClient('mongodb://mongodb:27017/')
     db = client['requisitos_db']
     collection = db['requisitos']
     
@@ -211,7 +211,7 @@ def agrupamento_requisitos(request, projeto_id):
 
 def processar_agrupamento(request, projeto_id):
     try:
-        client = MongoClient('mongodb://localhost:27017/')
+        client = MongoClient('mongodb://mongodb:27017/')
         db = client['requisitos_db']
         collection = db['requisitos']
         
@@ -237,46 +237,51 @@ def processar_agrupamento(request, projeto_id):
         return JsonResponse({'error': str(e)}, status=500)
 
 @login_required
+@login_required
 def remover_requisito(request):
     if request.method == "POST":
         projeto_id = request.POST.get("projeto_id")
         requisito_key = request.POST.get("requisito_key")
 
-        # Buscar o documento correto com base no projeto_id
-        requisito_doc = get_object_or_404(Requisito, projeto_id=projeto_id)
+        client = MongoClient('mongodb://mongodb:27017/')
+        db = client['requisitos_db']
+        collection = db['requisitos']
 
-        # Verificar se o requisito existe e remover da lista "requisitos"
-        if requisito_key in requisito_doc.requisitos:
-            del requisito_doc.requisitos[requisito_key]
+        projeto = collection.find_one({"projeto_id": int(projeto_id)})
 
-            # Remover o requisito de todos os grupos em "grupos"
-            grupos_atualizados = requisito_doc.grupos.copy() if requisito_doc.grupos else {}
-            
-            for grupo_nome, requisitos_ids in grupos_atualizados.items():
-                if requisito_key in requisitos_ids:
-                    requisitos_ids.remove(requisito_key)
-                    # Remover o grupo se ficar vazio
-                    if not requisitos_ids:
-                        del grupos_atualizados[grupo_nome]
+        if not projeto:
+            return JsonResponse({"error": "Projeto não encontrado"}, status=404)
 
-            # Inicializar as listas antes do uso para evitar UnboundLocalError
-            funcionais_atualizados = requisito_doc.funcionais.copy() if requisito_doc.funcionais else []
-            nao_funcionais_atualizados = requisito_doc.nao_funcionais.copy() if requisito_doc.nao_funcionais else []
+        requisitos = projeto.get("requisitos", {})
+        if requisito_key in requisitos:
+            del requisitos[requisito_key]
 
-            # Remover o requisito das listas funcionais e não funcionais
-            if requisito_key in funcionais_atualizados:
-                funcionais_atualizados.remove(requisito_key)
+            # Atualizar listas
+            grupos = projeto.get("grupos", {})
+            for grupo, reqs in list(grupos.items()):
+                if requisito_key in reqs:
+                    reqs.remove(requisito_key)
+                if not reqs:
+                    del grupos[grupo]
 
-            if requisito_key in nao_funcionais_atualizados:
-                nao_funcionais_atualizados.remove(requisito_key)
+            funcionais = projeto.get("funcionais", [])
+            nao_funcionais = projeto.get("nao_funcionais", [])
 
-            # Atualizar os grupos e listas no documento
-            requisito_doc.grupos = grupos_atualizados
-            requisito_doc.funcionais = funcionais_atualizados
-            requisito_doc.nao_funcionais = nao_funcionais_atualizados
+            if requisito_key in funcionais:
+                funcionais.remove(requisito_key)
+            if requisito_key in nao_funcionais:
+                nao_funcionais.remove(requisito_key)
 
-            # Salvar as alterações no banco de dados
-            requisito_doc.save()
+            # Atualizar no banco
+            collection.update_one(
+                {"projeto_id": int(projeto_id)},
+                {"$set": {
+                    "requisitos": requisitos,
+                    "grupos": grupos,
+                    "funcionais": funcionais,
+                    "nao_funcionais": nao_funcionais
+                }}
+            )
 
             messages.success(request, f"Requisito {requisito_key} removido com sucesso!")
 
@@ -288,43 +293,34 @@ def remover_requisito(request):
 
 
 
+
 @login_required
-def adicionar_requisito(request):
-    if request.method == "POST":
-        projeto_id = request.POST.get("projeto_id")
-        texto = request.POST.get("requisito_texto")
+def atualizar_agrupamento(request, projeto_id):
+    if request.method == 'POST':
+        try:
+            client = MongoClient('mongodb://mongodb:27017/')
+            db = client['requisitos_db']
+            collection = db['requisitos']
+            projeto = collection.find_one({"projeto_id": int(projeto_id)})
 
-        client = MongoClient('mongodb://localhost:27017/')
-        db = client['requisitos_db']
-        collection = db['requisitos']
-        projeto_mongo = collection.find_one({"projeto_id": int(projeto_id)})
+            if not projeto:
+                return JsonResponse({'status': 'error', 'message': 'Projeto não encontrado'}, status=404)
 
-        if not projeto_mongo:
-            return JsonResponse({"error": "Projeto não encontrado"}, status=404)
+            raw_data = json.loads(request.body)
+            novos_grupos = {}
 
-        requisitos = projeto_mongo.get("requisitos", {})
+            for grupo, req_ids in raw_data.get('grupos', {}).items():
+                novos_grupos[grupo] = [str(r) for r in req_ids if str(r) in projeto.get("requisitos", {})]
 
-        # Encontrar o próximo ID sequencial
-        numeros_existentes = []
-        for key in requisitos.keys():
-            try:
-                num = int(key)
-                numeros_existentes.append(num)
-            except ValueError:
-                pass
-        proximo_id = max(numeros_existentes) + 1 if numeros_existentes else 1
-        novo_id = str(proximo_id)
+            collection.update_one(
+                {"projeto_id": int(projeto_id)},
+                {"$set": {"grupos": novos_grupos}}
+            )
 
-        # Adicionar o novo requisito
-        collection.update_one(
-            {"projeto_id": int(projeto_id)},
-            {"$set": {f"requisitos.{novo_id}": {"texto": texto}}}
-        )
-        messages.success(request, f"Requisito {novo_id} adicionado com sucesso!")
+            return JsonResponse({'status': 'success'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
-        return JsonResponse({"success": True, "novo_id": novo_id})
-
-    return JsonResponse({"error": "Método não permitido"}, status=405)
 
 
 
@@ -358,7 +354,7 @@ def atualizar_agrupamento(request, projeto_id):
 
 @login_required
 def get_mindmap_data(request, projeto_id):
-    client = MongoClient('mongodb://localhost:27017/')
+    client = MongoClient('mongodb://mongodb:27017/')
     db = client['requisitos_db']
     collection = db['requisitos']
 
@@ -392,6 +388,66 @@ def get_mindmap_data(request, projeto_id):
 
     return JsonResponse(mind_data) 
 
+@login_required
+def adicionar_requisito(request):
+    if request.method == "POST":
+        client = MongoClient('mongodb://mongodb:27017/')
+        db = client['requisitos_db']
+        collection = db['requisitos']
+        projeto_id = request.POST.get("projeto_id")
+
+        if not projeto_id or not projeto_id.isdigit():
+            return JsonResponse({"error": "ID do projeto inválido"}, status=400)
+
+        projeto_mongo = collection.find_one({"projeto_id": int(projeto_id)})
+        if not projeto_mongo:
+            return JsonResponse({"error": "Projeto não encontrado"}, status=404)
+
+        requisitos = projeto_mongo.get("requisitos", {})
+
+        # Coletar os IDs existentes
+        numeros_existentes = []
+        for key in requisitos.keys():
+            try:
+                num = int(key)
+                numeros_existentes.append(num)
+            except ValueError:
+                pass
+        proximo_id = max(numeros_existentes) + 1 if numeros_existentes else 1
+
+        # Verifica se é um envio de múltiplos requisitos via arquivo .txt
+        arquivo = request.FILES.get('arquivo_txt')
+        textos_adicionados = []
+
+        if arquivo:
+            # Ler linhas do arquivo e adicionar cada linha como requisito
+            for linha in arquivo.readlines():
+                texto = linha.decode('utf-8').strip()
+                if texto:
+                    novo_id = str(proximo_id)
+                    collection.update_one(
+                        {"projeto_id": int(projeto_id)},
+                        {"$set": {f"requisitos.{novo_id}": {"texto": texto}}}
+                    )
+                    textos_adicionados.append({"id": novo_id, "texto": texto})
+                    proximo_id += 1
+        else:
+            # Caso seja um único requisito enviado via campo 'requisito_texto'
+            texto = request.POST.get("requisito_texto")
+            if not texto:
+                return JsonResponse({"error": "Texto do requisito é obrigatório"}, status=400)
+
+            novo_id = str(proximo_id)
+            collection.update_one(
+                {"projeto_id": int(projeto_id)},
+                {"$set": {f"requisitos.{novo_id}": {"texto": texto}}}
+            )
+            textos_adicionados.append({"id": novo_id, "texto": texto})
+
+        messages.success(request, f"{len(textos_adicionados)} requisito(s) adicionado(s) com sucesso!")
+        return JsonResponse({"success": True, "requisitos_adicionados": textos_adicionados})
+
+    return JsonResponse({"error": "Método não permitido"}, status=405)
 
 @csrf_exempt
 def save_mindmap_data(request, projeto_id):
@@ -399,7 +455,7 @@ def save_mindmap_data(request, projeto_id):
         return JsonResponse({'error': 'Método não permitido'}, status=405)
 
     try:
-        client = MongoClient('mongodb://localhost:27017/')
+        client = MongoClient('mongodb://mongodb:27017/')
         db = client['requisitos_db']
         collection = db['requisitos']
 
@@ -470,46 +526,51 @@ def save_mindmap_data(request, projeto_id):
 @login_required    
 @require_http_methods(["GET", "POST"])
 def editar_requisito(request, projeto_id, requisito_id):
-    try:
-        # Busca exata por projeto_id
-        requisito_doc = Requisito.objects.get(projeto_id=projeto_id)
+    client = MongoClient('mongodb://mongodb:27017/')
+    db = client['requisitos_db']
+    collection = db['requisitos']
 
-        # Se for um POST, atualizar os dados
-        if request.method == 'POST':
-            novo_texto = request.POST.get('texto', '')
-            novo_tipo = request.POST.get('tipo', '')
+    projeto = collection.find_one({"projeto_id": int(projeto_id)})
 
-            # Atualiza o requisito
-            requisito_doc.requisitos.setdefault(requisito_id, {})['texto'] = novo_texto
-
-            # Atualiza listas de funcionais/não funcionais
-            if novo_tipo == 'funcional':
-                if requisito_id not in requisito_doc.funcionais:
-                    requisito_doc.funcionais.append(requisito_id)
-                if requisito_id in requisito_doc.nao_funcionais:
-                    requisito_doc.nao_funcionais.remove(requisito_id)
-            elif novo_tipo == 'nao_funcional':
-                if requisito_id not in requisito_doc.nao_funcionais:
-                    requisito_doc.nao_funcionais.append(requisito_id)
-                if requisito_id in requisito_doc.funcionais:
-                    requisito_doc.funcionais.remove(requisito_id)
-
-            # Atualiza o documento no MongoDB
-            requisito_doc.save()  # Djongo pode falhar com update_fields, então removemos
-
-            messages.success(request, f"Requisito {requisito_id} alterado com sucesso!")
-
-            return JsonResponse({'status': 'success'})
-
-        # Retorno para GET
-        return JsonResponse({
-            'texto': requisito_doc.requisitos.get(requisito_id, {}).get('texto', ''),
-            'tipo': 'funcional' if requisito_id in requisito_doc.funcionais else 
-                   'nao_funcional' if requisito_id in requisito_doc.nao_funcionais else ''
-        })
-
-    except Requisito.DoesNotExist:
+    if not projeto:
         return JsonResponse({'status': 'error', 'message': 'Projeto não encontrado'}, status=404)
 
-    except Exception as e:
-        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    requisitos = projeto.get("requisitos", {})
+    funcionais = projeto.get("funcionais", [])
+    nao_funcionais = projeto.get("nao_funcionais", [])
+
+    if request.method == 'POST':
+        novo_texto = request.POST.get('texto', '')
+        novo_tipo = request.POST.get('tipo', '')
+
+        requisitos[requisito_id] = {"texto": novo_texto}
+
+        if novo_tipo == 'funcional':
+            if requisito_id not in funcionais:
+                funcionais.append(requisito_id)
+            if requisito_id in nao_funcionais:
+                nao_funcionais.remove(requisito_id)
+        elif novo_tipo == 'nao_funcional':
+            if requisito_id not in nao_funcionais:
+                nao_funcionais.append(requisito_id)
+            if requisito_id in funcionais:
+                funcionais.remove(requisito_id)
+
+        collection.update_one(
+            {"projeto_id": int(projeto_id)},
+            {"$set": {
+                "requisitos": requisitos,
+                "funcionais": funcionais,
+                "nao_funcionais": nao_funcionais
+            }}
+        )
+
+        messages.success(request, f"Requisito {requisito_id} alterado com sucesso!")
+        return JsonResponse({'status': 'success'})
+
+    return JsonResponse({
+        'texto': requisitos.get(requisito_id, {}).get('texto', ''),
+        'tipo': 'funcional' if requisito_id in funcionais else 
+                'nao_funcional' if requisito_id in nao_funcionais else ''
+    })
+

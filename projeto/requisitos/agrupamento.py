@@ -105,11 +105,10 @@ def agrupamento(requisitos,indices):
     diretorio_atual = os.getcwd()
 
     # Nome da pasta que está na mesma raiz
-    nome_da_pasta = "requisitos\modelo_similaridade"
+    nome_da_pasta = "/projeto/requisitos/modelo_similaridade"
 
     # Constrói o caminho completo adicionando o nome da pasta
     model_path = os.path.join(diretorio_atual, nome_da_pasta)
-    print(model_path)
 
 
 
