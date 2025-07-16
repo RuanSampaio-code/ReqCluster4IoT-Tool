@@ -24,7 +24,7 @@ Tool4IoTReq é uma plataforma inteligente para gestão, classificação e agrupa
   - Django 5.x
   - Docker (opcional, para ambiente isolado)
 - **Hardware**
-  - 4GB RAM (mínimo recomendado)
+  - 8GB RAM (mínimo recomendado)
   - 500MB de espaço livre para base de dados e modelos
 - **Ambiente**
   - Sistema Operacional: Linux, Windows ou MacOS
@@ -36,30 +36,47 @@ Tool4IoTReq é uma plataforma inteligente para gestão, classificação e agrupa
 
 1. **Clone o repositório:**
    ```sh
-   git clone https://github.com/seuusuario/tool4iotreq.git
+   git clone https://github.com/RuanSampaio-code/ReqCluster4IoT-Tool.git
    cd tool4iotreq/projeto
    ```
 
-2. **Instale as dependências:**
+
+2. **Crie e ative um ambiente virtual (recomendado):**
+
+   * **Windows:**
+
+     ```sh
+     python -m venv venv
+     venv\Scripts\activate
+     ```
+
+   * **Linux/macOS:**
+
+     ```sh
+     python3 -m venv venv
+     source venv/bin/activate
+     ```
+
+3. **Instale as dependências:**
    ```sh
    pip install -r requirements.txt
    ```
 
-3. **Configure o banco de dados MongoDB:**
+4. **Configure o banco de dados MongoDB:**
    - Certifique-se que o serviço MongoDB está rodando localmente na porta padrão (27017).
 
-4. **Execute as migrações do Django:**
+5. **Execute as migrações do Django:**
    ```sh
    python manage.py migrate
    ```
 
-5. **Inicie o servidor de desenvolvimento:**
+6. **Inicie o servidor de desenvolvimento:**
    ```sh
    python manage.py runserver
    ```
 
-6. **Acesse o sistema:**
-   - Abra [http://localhost:8000/](http://localhost:8000/) no navegador.
+7. **Acesse o sistema:**
+   - Abra [http://127.0.0.1:8000/](http://127.0.0.1:8000/) no navegador.
 
 ## Teste da Instalação
 
@@ -75,6 +92,6 @@ Após iniciar o servidor, acesse `/` e verifique se a página inicial é exibida
 
 Este projeto está sob a [MIT License](LICENSE).
 
----
 
-Para dúvidas ou sugestões, consulte o artigo ou abra uma issue neste repositório.
+
+
