@@ -24,7 +24,7 @@ Tool4IoTReq é uma plataforma inteligente para gestão, classificação e agrupa
   - Django 5.x
   - Docker (opcional, para ambiente isolado)
 - **Hardware**
-  - 4GB RAM (mínimo recomendado)
+  - 8GB RAM (mínimo recomendado)
   - 500MB de espaço livre para base de dados e modelos
 - **Ambiente**
   - Sistema Operacional: Linux, Windows ou MacOS
@@ -36,7 +36,7 @@ Tool4IoTReq é uma plataforma inteligente para gestão, classificação e agrupa
 
 1. **Clone o repositório:**
    ```sh
-   git clone https://github.com/seuusuario/tool4iotreq.git
+   git clone https://github.com/RuanSampaio-code/ReqCluster4IoT-Tool.git
    cd tool4iotreq/projeto
    ```
 
@@ -59,7 +59,7 @@ Tool4IoTReq é uma plataforma inteligente para gestão, classificação e agrupa
    ```
 
 6. **Acesse o sistema:**
-   - Abra [http://localhost:8000/](http://localhost:8000/) no navegador.
+   - Abra [http://127.0.0.1:8000/](http://127.0.0.1:8000/) no navegador.
 
 ## Teste da Instalação
 
@@ -75,6 +75,4 @@ Após iniciar o servidor, acesse `/` e verifique se a página inicial é exibida
 
 Este projeto está sob a [MIT License](LICENSE).
 
----
 
-Para dúvidas ou sugestões, consulte o artigo ou abra uma issue neste repositório.
