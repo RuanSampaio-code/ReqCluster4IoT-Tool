@@ -9,6 +9,8 @@ Tool4IoTReq is an intelligent platform for managing, classifying, and grouping r
   - `project/` (Django settings)
   - `projetos/` (project logic)
   - `requisitos/` (requirements classification and grouping, models, ML)
+    - `modelo_classificacao/` (AI model for classification)
+    - `modelo_similaridade/` (AI model for similarity)
   - `usuarios/` (user management)
   - `static/` (static files)
   - `templates/` (HTML templates)
@@ -31,6 +33,8 @@ Tool4IoTReq is an intelligent platform for managing, classifying, and grouping r
   - Internet access to download NLP models (if needed)
 - **Dependencies**
   - All dependencies are listed in [requirements.txt](projeto/requirements.txt)
+- **AI Models**
+  - Download the folders `modelo_classificacao` and `modelo_similaridade` from [Google Drive](https://drive.google.com/drive/u/3/folders/1YwLZWSpjo-6yfBtOU5MUOuCS04TX3Ni3) and place them inside the `requisitos` folder before running the system.
 
 ## Installation
 
@@ -59,20 +63,25 @@ Tool4IoTReq is an intelligent platform for managing, classifying, and grouping r
    pip install -r requirements.txt
    ```
 
-4. **Configure MongoDB database:**
+4. **Download AI models:**
+   - Request access to the Google Drive folder: [Google Drive](https://drive.google.com/drive/u/3/folders/1YwLZWSpjo-6yfBtOU5MUOuCS04TX3Ni3).
+   - Download the folders `modelo_classificacao` and `modelo_similaridade` from [Google Drive](https://drive.google.com/drive/u/3/folders/1YwLZWSpjo-6yfBtOU5MUOuCS04TX3Ni3).
+   - Place both folders inside the `projeto/requisitos/` directory.
+
+5. **Configure MongoDB database:**
    - Make sure MongoDB service is running locally on the default port (27017).
 
-5. **Run Django migrations:**
+6. **Run Django migrations:**
    ```sh
    python manage.py migrate
    ```
 
-6. **Start the development server:**
+7. **Start the development server:**
    ```sh
    python manage.py runserver
    ```
 
-7. **Access the system:**
+8. **Access the system:**
    - Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your browser.
 
 ## Installation Test
@@ -102,6 +111,8 @@ Tool4IoTReq é uma plataforma inteligente para gestão, classificação e agrupa
   - `project/` (configurações Django)
   - `projetos/` (lógica de projetos)
   - `requisitos/` (classificação e agrupamento de requisitos, modelos, ML)
+    - `modelo_classificacao/` (modelo de IA para classificação)
+    - `modelo_similaridade/` (modelo de IA para similaridade)
   - `usuarios/` (gestão de usuários)
   - `static/` (arquivos estáticos)
   - `templates/` (templates HTML)
@@ -124,6 +135,8 @@ Tool4IoTReq é uma plataforma inteligente para gestão, classificação e agrupa
   - Acesso à internet para baixar modelos de PLN (se necessário)
 - **Dependências**
   - Todas as dependências estão especificadas em [requirements.txt](projeto/requirements.txt)
+- **Modelos de IA**
+  - Baixe as pastas `modelo_classificacao` e `modelo_similaridade` do [Google Drive](https://drive.google.com/drive/u/3/folders/1YwLZWSpjo-6yfBtOU5MUOuCS04TX3Ni3) e coloque-as dentro da pasta `requisitos` antes de executar o sistema.
 
 ## Instalação
 
@@ -152,20 +165,25 @@ Tool4IoTReq é uma plataforma inteligente para gestão, classificação e agrupa
    pip install -r requirements.txt
    ```
 
-4. **Configure o banco de dados MongoDB:**
+4. **Baixe os modelos de IA:**
+   - Primeiro solicite acesso ao drive do link: [Google Drive](https://drive.google.com/drive/u/3/folders/1YwLZWSpjo-6yfBtOU5MUOuCS04TX3Ni3).
+   - Baixe as pastas `modelo_classificacao` e `modelo_similaridade` do [Google Drive](https://drive.google.com/drive/u/3/folders/1YwLZWSpjo-6yfBtOU5MUOuCS04TX3Ni3).
+   - Coloque ambas as pastas dentro do diretório `projeto/requisitos/`.
+
+5. **Configure o banco de dados MongoDB:**
    - Certifique-se que o serviço MongoDB está rodando localmente na porta padrão (27017).
 
-5. **Execute as migrações do Django:**
+6. **Execute as migrações do Django:**
    ```sh
    python manage.py migrate
    ```
 
-6. **Inicie o servidor de desenvolvimento:**
+7. **Inicie o servidor de desenvolvimento:**
    ```sh
    python manage.py runserver
    ```
 
-7. **Acesse o sistema:**
+8. **Acesse o sistema:**
    - Abra [http://127.0.0.1:8000/](http://127.0.0.1:8000/) no navegador.
 
 ## Teste da Instalação
