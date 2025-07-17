@@ -1,5 +1,98 @@
 # Tool4IoTReq
 
+Tool4IoTReq is an intelligent platform for managing, classifying, and grouping requirements in Internet of Things (IoT) projects, using Natural Language Processing (NLP) and Machine Learning techniques.
+
+## Repository Organization
+
+- `projeto/`  
+  - `manage.py`  
+  - `project/` (Django settings)
+  - `projetos/` (project logic)
+  - `requisitos/` (requirements classification and grouping, models, ML)
+  - `usuarios/` (user management)
+  - `static/` (static files)
+  - `templates/` (HTML templates)
+  - `requirements.txt` (Python dependencies)
+  - `README.md` (this file)
+- [Accepted Article (PDF)](https://arxiv.org/abs/xxxx.xxxxx) <!-- Replace with actual link or local path -->
+
+## Requirements
+
+- **Software**
+  - Python 3.10+
+  - MongoDB 4.0+ (requirements database)
+  - Django 5.x
+  - Docker (optional, for isolated environment)
+- **Hardware**
+  - 8GB RAM (minimum recommended)
+  - 500MB free space for database and models
+- **Environment**
+  - Operating System: Linux, Windows, or MacOS
+  - Internet access to download NLP models (if needed)
+- **Dependencies**
+  - All dependencies are listed in [requirements.txt](projeto/requirements.txt)
+
+## Installation
+
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/RuanSampaio-code/ReqCluster4IoT-Tool.git
+   cd tool4iotreq/projeto
+   ```
+
+2. **Create and activate a virtual environment (recommended):**
+
+   * **Windows:**
+     ```sh
+     python -m venv venv
+     venv\Scripts\activate
+     ```
+
+   * **Linux/macOS:**
+     ```sh
+     python3 -m venv venv
+     source venv/bin/activate
+     ```
+
+3. **Install dependencies:**
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+4. **Configure MongoDB database:**
+   - Make sure MongoDB service is running locally on the default port (27017).
+
+5. **Run Django migrations:**
+   ```sh
+   python manage.py migrate
+   ```
+
+6. **Start the development server:**
+   ```sh
+   python manage.py runserver
+   ```
+
+7. **Access the system:**
+   - Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your browser.
+
+## Installation Test
+
+After starting the server, access `/` and check if the home page is displayed. To test grouping, create a project and add requirements, then access the grouping feature. The expected output is the visualization of requirements grouped in a mind map.
+
+## Storage Requirements and Ethical/Legal Statements
+
+- Data is stored locally in MongoDB and SQLite.
+- Do not store sensitive personal data without consent.
+- System usage must comply with applicable data protection laws.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+# Tool4IoTReq (Português)
+
 Tool4IoTReq é uma plataforma inteligente para gestão, classificação e agrupamento de requisitos em projetos de Internet das Coisas (IoT), utilizando técnicas de Processamento de Linguagem Natural (PLN) e Aprendizado de Máquina.
 
 ## Organização do Repositório
@@ -40,18 +133,15 @@ Tool4IoTReq é uma plataforma inteligente para gestão, classificação e agrupa
    cd tool4iotreq/projeto
    ```
 
-
 2. **Crie e ative um ambiente virtual (recomendado):**
 
    * **Windows:**
-
      ```sh
      python -m venv venv
      venv\Scripts\activate
      ```
 
    * **Linux/macOS:**
-
      ```sh
      python3 -m venv venv
      source venv/bin/activate
@@ -91,7 +181,3 @@ Após iniciar o servidor, acesse `/` e verifique se a página inicial é exibida
 ## Licença
 
 Este projeto está sob a [MIT License](LICENSE).
-
-
-
-
