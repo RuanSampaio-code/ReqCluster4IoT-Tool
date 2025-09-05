@@ -17,7 +17,7 @@ Tool4IoTReq is an intelligent platform for managing, classifying, and grouping r
   - `requirements.txt` (Python dependencies)
   - `README.md` (this file)
 - `docker-compose.yml` (MongoDB container setup)
-- [Accepted Article (PDF)](./CBSoft___SBES_2025_Uma_ferramenta_para_apoiar_a_análise_de_requisitos_de_software_de_IoT_utilizando_técnicas_de_agrupamento.pdf)
+- [Accepted Article (PDF)](https://drive.google.com/file/d/1S2b5EeN-M6eslRI7P7d2uU01OZ5DbDiz/view?usp=sharing)
 
 ## Requirements
 
